@@ -11,7 +11,7 @@
       media="screen"
     />
   </head>
-  <body>
+  <body id="top">
     <header>
       <h1>Manajev AI Labs</h1>
       <p class="subtitle">
@@ -135,7 +135,16 @@
 
     <footer>
       &copy; 2025 Manajev AI Labs. Built with grit and GitHub Pages.
-      <a href="#about">Top</a>
+      <a href="#top">Top</a>
     </footer>
+
+    <script>
+      // Prevent auto-scroll on page load
+      if (window.location.hash) {
+        setTimeout(function () {
+          window.scrollTo(0, 0);
+        }, 1);
+      }
+    </script>
   </body>
 </html>

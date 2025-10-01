@@ -27,6 +27,7 @@ body {
   color: var(--text-primary);
   line-height: 1.7;
   font-size: 17px;
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
 }
 
 /* Header */
@@ -222,6 +223,7 @@ footer a {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Selection color */
@@ -232,4 +234,71 @@ html {
 ::-moz-selection {
   background: var(--border-accent);
   color: #fff;
+}
+
+/* Wide-screen enhancements for high-res desktops (e.g., your HP) */
+@media (min-width: 1200px) {
+  section {
+    max-width: 1000px; /* Wider canvas—fills more screen without crowding */
+    padding: 0 3rem;
+  }
+
+  /* Skills as a flexible grid for better scan on big screens */
+  #skills ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  #skills li {
+    margin: 0;
+    border-left: 2px solid var(--border-accent); /* Subtle left accent */
+    border-top: 4px solid var(--border-accent);
+    text-align: left;
+    padding-left: 1.2rem;
+  }
+
+  /* Projects: Keep stacked but with more horizontal padding */
+  #projects ul {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 3.2rem; /* Bigger hero on wide—commands the space */
+  }
+
+  h2 {
+    font-size: 2.1rem;
+  }
+}
+
+/* Ultra-wide screen enhancements (1920px+) */
+@media (min-width: 1920px) {
+  section {
+    max-width: 1200px; /* Even wider for ultra-wide monitors */
+  }
+
+  /* Projects in 2-column grid for better use of horizontal space */
+  #projects ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+  }
+
+  #projects li {
+    margin: 0;
+  }
+
+  /* Skills can go 3 columns on ultra-wide */
+  #skills ul {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  h1 {
+    font-size: 3.6rem; /* Even bigger hero for ultra-wide */
+  }
 }

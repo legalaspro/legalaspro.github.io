@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Dark navy background matching your site -->
+  <rect width="100" height="100" fill="#0a0e27" rx="15"/>
+
+  <!-- Blue "M" for Manajev AI Labs -->
+  <text x="50" y="72" font-family="-apple-system, BlinkMacSystemFont, Arial, sans-serif" font-size="65" font-weight="700" fill="#64b5f6" text-anchor="middle">M</text>
+
+  <!-- Small accent dot (AI/tech feel) -->
+  <circle cx="75" cy="25" r="6" fill="#42a5f5"/>
+</svg>

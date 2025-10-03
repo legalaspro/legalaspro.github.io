@@ -180,9 +180,20 @@ footer {
   margin-top: 5rem;
 }
 
+footer p {
+  margin-bottom: 0.5rem;
+}
+
 footer a {
   color: var(--accent-primary);
   margin-left: 1rem;
+}
+
+.privacy-notice {
+  font-size: 0.85rem;
+  color: #78909c;
+  margin-top: 1rem;
+  opacity: 0.8;
 }
 
 /* Responsive Design */

@@ -169,6 +169,24 @@ a:focus {
   outline-offset: 2px;
 }
 
+/* Ultra-professional subtle links section (resume/PDF) */
+#links {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  text-align: center;
+  margin: 0.75rem auto 1.25rem;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+#links:hover {
+  opacity: 1;
+}
+
+#links a {
+  color: var(--text-secondary);
+}
+
 /* Footer */
 footer {
   text-align: center;

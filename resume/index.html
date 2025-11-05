@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Résumé — Dmitri Manajev (RL/Robotics)</title>
+    <meta
+      name="description"
+      content="Résumé of Dmitri Manajev — RL/Robotics engineer (MAPPO/HAPPO/MADDPG/PPO/SAC/TD3, PyTorch, ROS 2, Unity ML-Agents). Zurich, Switzerland."
+    />
+    <meta name="author" content="Dmitri Manajev" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://manajev.com/resume/" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+
+    <!-- Stylesheet -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../stylesheets/stylesheet.css"
+      media="screen"
+    />
+
+    <style>
+      /* Resume-specific styles */
+      .resume-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      .resume-intro {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--bg-secondary);
+        border-left: 4px solid var(--border-accent);
+        border-radius: 4px;
+      }
+
+      .pdf-viewer {
+        margin: 2rem 0;
+        border: 1px solid var(--border-subtle);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .pdf-viewer object {
+        display: block;
+        width: 100%;
+        min-height: 900px;
+      }
+
+      @media (max-width: 768px) {
+        .resume-container {
+          padding: 0 1.5rem;
+        }
+
+        .pdf-viewer object {
+          min-height: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <header>
+      <h1>
+        <a href="../" style="color: inherit; text-decoration: none"
+          >Manajev AI Labs</a
+        >
+      </h1>
+      <p class="subtitle">
+        Dmitri Manajev | Reinforcement Learning, AI & Robotics
+      </p>
+    </header>
+
+    <div class="resume-container">
+      <section>
+        <h2>Résumé</h2>
+
+        <div class="resume-intro">
+          <p>
+            <strong>Dmitri Manajev</strong> — Reinforcement Learning & Robotics
+            engineer with 12+ years of engineering experience shipping
+            production software. Multi-agent & continuous control (MAPPO, HAPPO,
+            MADDPG, PPO, SAC, TD3) in PyTorch; Unity ML-Agents; ROS 2/C++; focus
+            on reproducible training, evaluation, and deployment.
+          </p>
+          <p style="margin-top: 1rem">
+            <a href="../">← Back to main site</a>
+          </p>
+        </div>
+
+        <div class="pdf-viewer">
+          <object
+            data="../assets/resume.pdf"
+            type="application/pdf"
+            width="100%"
+            height="900"
+          >
+            <p style="padding: 2rem; text-align: center">
+              Your browser doesn't support embedded PDFs.
+              <a href="../assets/resume.pdf">Download the PDF</a> instead.
+            </p>
+          </object>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>
+        &copy; 2025 Manajev AI Labs. <a href="#top">Top</a> ·
+        <a href="../">Home</a>
+      </p>
+    </footer>
+  </body>
+</html>

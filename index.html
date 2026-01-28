@@ -235,9 +235,43 @@
 
     <section id="projects">
       <h2>Featured Projects</h2>
-      <ul>
+
+      <div class="project-tabs" role="tablist" aria-label="Project categories">
+        <button
+          type="button"
+          class="tab-btn active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="rl-projects"
+          id="tab-rl"
+          data-tab="rl"
+        >
+          AI / RL
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          role="tab"
+          aria-selected="false"
+          aria-controls="robotics-projects"
+          id="tab-robotics"
+          data-tab="robotics"
+        >
+          Robotics
+        </button>
+      </div>
+
+      <ul
+        class="project-list"
+        id="rl-projects"
+        role="tabpanel"
+        aria-labelledby="tab-rl"
+      >
         <li>
-          <a href="https://github.com/legalaspro/marl-ppo-suite" target="_blank"
+          <a
+            href="https://github.com/legalaspro/marl-ppo-suite"
+            target="_blank"
+            rel="noopener noreferrer"
             >MARL PPO Suite</a
           >
           <span class="project-desc"
@@ -247,11 +281,13 @@
             <a
               href="https://wandb.ai/legalaspro-rl/marl-ppo-suite/reports/MAPPO-vs-HAPPO-SMACv2-Benchmarks---VmlldzoxMjY1NjYwMg"
               target="_blank"
+              rel="noopener noreferrer"
               >W&B benchmarks</a
             >,
             <a
               href="https://huggingface.co/models?other=marl-ppo-suite"
               target="_blank"
+              rel="noopener noreferrer"
               >HF Model Zoo</a
             >.</span
           >
@@ -260,6 +296,7 @@
           <a
             href="https://github.com/legalaspro/unity_multiagent_rl"
             target="_blank"
+            rel="noopener noreferrer"
             >Unity Multi-Agent RL Framework</a
           >
           <span class="project-desc"
@@ -271,6 +308,7 @@
           <a
             href="https://github.com/legalaspro/maddpg-zoo-torch"
             target="_blank"
+            rel="noopener noreferrer"
             >MADDPG Zoo (PyTorch)</a
           >
           <span class="project-desc"
@@ -279,7 +317,10 @@
           >
         </li>
         <li>
-          <a href="https://github.com/legalaspro/rl-odyssey" target="_blank"
+          <a
+            href="https://github.com/legalaspro/rl-odyssey"
+            target="_blank"
+            rel="noopener noreferrer"
             >RL-Odyssey</a
           >
           <span class="project-desc"
@@ -292,6 +333,7 @@
           <a
             href="https://github.com/legalaspro/unity-reacher-crawler-deeprl"
             target="_blank"
+            rel="noopener noreferrer"
             >Unity Deep RL (DDPG/TD3/SAC)</a
           >
           <span class="project-desc"
@@ -299,14 +341,103 @@
             Unity ML-Agents environments.</span
           >
         </li>
+      </ul>
+
+      <ul
+        class="project-list hidden"
+        id="robotics-projects"
+        role="tabpanel"
+        aria-labelledby="tab-robotics"
+      >
         <li>
-          <a href="http://cryptoapps.ch/" target="_blank">Cryptoapps</a>
+          <a
+            href="https://github.com/legalaspro/fastbot"
+            target="_blank"
+            rel="noopener noreferrer"
+            >FastBot</a
+          >
           <span class="project-desc"
-            >Secure cryptocurrency wallet technology and blockchain
-            applications.</span
+            >Dockerized ROS 2 environment for differential-drive robot: Gazebo
+            sim + real hardware (RPi), Nav2 SLAM, web UI & VPN remote
+            access.</span
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/legalaspro/manipulation_project"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Manipulation Project</a
+          >
+          <span class="project-desc"
+            >ROS 2 manipulation system for UR3E with vision-guided
+            pick-and-place, MoveIt 2 motion planning, and gripper control. Sim +
+            real hardware ready.</span
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/legalaspro/warehouse_project"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Warehouse Project</a
+          >
+          <span class="project-desc"
+            >ROS 2 warehouse automation: AMCL localization, Nav2 path planning,
+            Cartographer SLAM, and custom orchestrator for autonomous shelf
+            pick-and-place.</span
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/legalaspro/rosbot_xl_pid_maze_solver"
+            target="_blank"
+            rel="noopener noreferrer"
+            >ROSbot XL Maze Solver</a
+          >
+          <span class="project-desc"
+            >Autonomous maze solver for ROSbot XL using PID control with
+            obstacle avoidance on holonomic base (ROS 2).</span
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/legalaspro/anthropomorphic_arm_ik_ros"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Anthropomorphic Arm IK</a
+          >
+          <span class="project-desc"
+            >Inverse Kinematics and motion control of an anthropomorphic 3-DOF
+            manipulator using ROS 1 with Denavit-Hartenberg parameters.</span
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/legalaspro/ros2_jenkins_ci_waypoints"
+            target="_blank"
+            rel="noopener noreferrer"
+            >ROS Jenkins CI/CD</a
+          >
+          <span class="project-desc"
+            >CI/CD pipelines for
+            <a
+              href="https://github.com/legalaspro/ros2_jenkins_ci_waypoints"
+              target="_blank"
+              rel="noopener noreferrer"
+              >ROS 2</a
+            >
+            &
+            <a
+              href="https://github.com/legalaspro/ros1_jenkins_ci_waypoints"
+              target="_blank"
+              >ROS 1</a
+            >: Jenkins, Docker, automated testing for waypoint navigation in
+            Gazebo.</span
           >
         </li>
       </ul>
+
       <p>
         Full code on
         <a href="https://github.com/legalaspro" target="_blank">GitHub</a>. Fork
@@ -337,7 +468,7 @@
         <a href="/resume/">View online</a> ·
         <a href="/assets/resume.pdf">PDF</a>
       </p>
-      <p>Based in Zurich/Tallinn. Worldwide remote.</p>
+      <p>Based in Zurich, Worldwide remote.</p>
     </section>
 
     <footer>
@@ -368,6 +499,28 @@
           window.scrollTo(0, 0);
         }, 1);
       }
+
+      // Project tabs toggle
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          // Update active button and aria-selected
+          document.querySelectorAll(".tab-btn").forEach((b) => {
+            b.classList.remove("active");
+            b.setAttribute("aria-selected", "false");
+          });
+          btn.classList.add("active");
+          btn.setAttribute("aria-selected", "true");
+
+          // Show/hide project lists
+          const tab = btn.dataset.tab;
+          document
+            .getElementById("rl-projects")
+            .classList.toggle("hidden", tab !== "rl");
+          document
+            .getElementById("robotics-projects")
+            .classList.toggle("hidden", tab !== "robotics");
+        });
+      });
     </script>
   </body>
 </html>

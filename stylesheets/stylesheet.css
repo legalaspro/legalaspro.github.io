@@ -19,8 +19,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
-    "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "Helvetica Neue",
+    Arial, sans-serif;
   margin: 0;
   padding: 0;
   background: var(--bg-primary);
@@ -212,6 +213,40 @@ footer a {
   color: #78909c;
   margin-top: 1rem;
   opacity: 0.8;
+}
+
+/* Project Tabs */
+.project-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: var(--border-accent);
+  color: white;
+  border-color: var(--border-accent);
+}
+
+.project-list.hidden {
+  display: none;
 }
 
 /* Responsive Design */

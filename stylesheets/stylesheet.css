@@ -245,7 +245,7 @@ footer a {
   border-color: var(--border-accent);
 }
 
-.project-list.hidden {
+#projects .project-list.hidden {
   display: none;
 }
 

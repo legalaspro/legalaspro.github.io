@@ -56,6 +56,10 @@
       name="twitter:image"
       content="https://manajev.com/assets/og-image.png"
     />
+    <meta
+      name="twitter:image:alt"
+      content="Dmitri Manajev — Robotics &amp; RL Engineer in Zurich. Manajev AI Labs · manajev.com"
+    />
 
     <link rel="canonical" href="https://manajev.com/" />
     <link
@@ -63,8 +67,9 @@
       type="application/pdf"
       href="https://manajev.com/assets/resume.pdf"
     />
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="icon" href="favicon-96.png" type="image/png" sizes="96x96" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
     <meta name="theme-color" content="#0b0f13" />
 
     <script type="application/ld+json">
@@ -74,7 +79,6 @@
         "@id": "https://manajev.com/#dmitri",
         "name": "Dmitri Manajev",
         "url": "https://manajev.com/",
-        "image": "https://manajev.com/assets/og-image.png",
         "jobTitle": "Robotics and Reinforcement Learning Engineer",
         "description": "Robotics and Reinforcement Learning Engineer with 15+ years of software engineering experience, including software architecture, engineering leadership, technical product management, and entrepreneurship.",
         "worksFor": {
@@ -135,7 +139,13 @@
     <header class="site-header">
       <div class="shell site-header__inner">
         <a class="wordmark" href="#top" aria-label="Manajev AI Labs, home">
-          <span class="wordmark__mark" aria-hidden="true">DM</span>
+          <img
+            class="wordmark__mark"
+            src="favicon.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
           <span>Manajev AI Labs</span>
         </a>
 
@@ -186,7 +196,8 @@
 
           <p class="hero__location">
             Currently:
-            <a href="https://hivebotics.tech/">Robotics Engineer at Hivebotics</a>
+            Independent Robotics Engineer ·
+            <a href="https://hivebotics.tech/">Hivebotics</a>
             · based in Zurich · remote + on-site in Singapore
           </p>
         </div>
@@ -596,10 +607,6 @@
                 and Python for autonomous mobile manipulators, spanning
                 navigation, arm control, systems integration, diagnostics,
                 failure recovery, and real-robot validation.
-              </p>
-              <p>
-                Work includes Nav2 and MoveIt Pro, with on-site commissioning
-                in Singapore.
               </p>
               <ul class="tag-list" aria-label="Hivebotics technologies">
                 <li>ROS 2 / C++ / Python</li>

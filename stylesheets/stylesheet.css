@@ -151,6 +151,16 @@ li:focus-within {
   line-height: 1.6;
 }
 
+#recent h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#recent .project-desc {
+  margin: 0.6rem 0 0;
+}
+
 /* Links */
 a {
   color: var(--accent-primary);
@@ -241,7 +251,7 @@ footer a {
 
 .tab-btn.active {
   background: var(--border-accent);
-  color: white;
+  color: var(--bg-primary);
   border-color: var(--border-accent);
 }
 

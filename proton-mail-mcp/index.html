@@ -924,6 +924,124 @@
           display: none;
         }
       }
+
+      /* Where the paths stay a table, the system names never break mid-word. */
+      @media (min-width: 561px) {
+        .table th[scope="row"] {
+          white-space: nowrap;
+        }
+      }
+
+      /* Desktop: a wider page with side-by-side columns. Smaller screens keep the single column above. */
+      @media (min-width: 1024px) {
+        :root {
+          --page: 1120px;
+          --cols: clamp(32px, 4vw, 56px);
+        }
+        .intro,
+        .note,
+        .where,
+        details > .body > p,
+        details > .body > ul {
+          max-width: 70ch;
+        }
+
+        /* Hero: the pitch on the left, the install card beside it. */
+        .hero {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          grid-template-rows: repeat(5, auto) 1fr;
+          column-gap: var(--cols);
+          align-items: start;
+        }
+        .hero > * {
+          grid-column: 1;
+        }
+        .hero > .install {
+          grid-column: 2;
+          grid-row: 1 / -1;
+          align-self: center;
+          margin-top: 0;
+        }
+
+        .tryit {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          grid-template-rows: auto 1fr;
+          column-gap: var(--cols);
+          align-items: start;
+        }
+        .tryit > .prompt {
+          grid-column: 2;
+          grid-row: 1 / -1;
+          align-self: center;
+        }
+        .tryit > p {
+          margin-bottom: 0;
+        }
+
+        /* Privacy: each paragraph beside the path it describes. */
+        #privacy {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          column-gap: var(--cols);
+          align-items: center;
+        }
+        #privacy > * {
+          grid-column: 1 / -1;
+        }
+        #privacy > .intro,
+        #privacy > p {
+          grid-column: 1;
+          margin: 0 0 22px;
+        }
+        #privacy > .chain {
+          grid-column: 2;
+          margin: 0 0 22px;
+        }
+        .facts {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: var(--cols);
+          margin-top: 0;
+        }
+
+        /* Tools: Read and Draft in one column, Act in the other. */
+        #tools {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          grid-template-rows: auto auto auto 1fr auto;
+          column-gap: var(--cols);
+          align-items: start;
+        }
+        #tools > * {
+          grid-column: 1 / -1;
+        }
+        #tools > #tools-read {
+          grid-column: 1;
+          grid-row: 3;
+        }
+        #tools > #tools-draft {
+          grid-column: 1;
+          grid-row: 4;
+        }
+        #tools > #tools-act {
+          grid-column: 2;
+          grid-row: 3 / 5;
+          margin-top: 0;
+        }
+        #tools > .go {
+          grid-row: 5;
+        }
+
+        /* Questions: the heading on the left, the answers beside it. */
+        .faq {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+          column-gap: var(--cols);
+          align-items: start;
+        }
+      }
       @media print {
         .bar {
           position: static;

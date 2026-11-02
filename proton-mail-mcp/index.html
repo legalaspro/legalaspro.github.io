@@ -942,7 +942,8 @@
         .note,
         .where,
         details > .body > p,
-        details > .body > ul {
+        details > .body > ul,
+        footer p {
           max-width: 70ch;
         }
 
@@ -980,12 +981,11 @@
           margin-bottom: 0;
         }
 
-        /* Privacy: each paragraph beside the path it describes. */
+        /* Privacy: each path on one line across the page, below the paragraph it describes. */
         #privacy {
           display: grid;
           grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
           column-gap: var(--cols);
-          align-items: center;
         }
         #privacy > * {
           grid-column: 1 / -1;
@@ -993,11 +993,10 @@
         #privacy > .intro,
         #privacy > p {
           grid-column: 1;
-          margin: 0 0 22px;
+          margin: 0 0 14px;
         }
         #privacy > .chain {
-          grid-column: 2;
-          margin: 0 0 22px;
+          margin: 0 0 26px;
         }
         .facts {
           display: grid;
@@ -1040,6 +1039,10 @@
           grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
           column-gap: var(--cols);
           align-items: start;
+        }
+        .faq > h2 {
+          position: sticky;
+          top: calc(var(--bar) + 16px);
         }
       }
       @media print {

@@ -18,7 +18,8 @@ bearer token, and never put any of them in a command, a file or a message.
 - Command: `proton-mail-mcp`, also installed as `mcp-proton-mail`. Server name in client configs:
   `proton-mail`.
 
-The npm package `proton-mail-mcp` is a different project. Install only the PyPI package above.
+It ships only as the PyPI package above and its GitHub source, with no app download or .exe.
+Install only that package.
 
 Every command below starts with `uvx mcp-proton-mail`. To pin this version, use
 `uvx mcp-proton-mail@1.30.0` instead.

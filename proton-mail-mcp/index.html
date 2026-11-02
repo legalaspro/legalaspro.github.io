@@ -7,7 +7,7 @@
     <title>mcp-proton-mail — Proton Mail MCP server: approval-gated, local through Bridge</title>
     <meta
       name="description"
-      content="Unofficial, open-source MCP server for Proton Mail. Your AI agent searches, reads and drafts through Proton Mail Bridge on your own computer. Moving, deleting or sending needs a single-use token tied to the exact messages you approved. Install: uvx mcp-proton-mail setup."
+      content="Unofficial, open-source MCP server for Proton Mail. Your AI agent searches, reads and drafts through Proton Mail Bridge on your own computer. Moving, deleting or sending needs a single-use token tied to the exact messages you approved; undo_action, when you ask, needs none. Install: uvx mcp-proton-mail setup."
     />
     <meta name="author" content="Dmitri Manajev" />
     <meta name="robots" content="index,follow" />
@@ -47,7 +47,7 @@
         "@type": "SoftwareApplication",
         "name": "mcp-proton-mail",
         "alternateName": ["proton-mail-mcp", "io.github.legalaspro/proton-mail-mcp"],
-        "description": "Unofficial, open-source MCP server for Proton Mail Bridge. An AI agent can search and read mail and write drafts; moving, deleting or sending needs a single-use token bound to the exact previewed messages and the user's approval. Runs on the user's computer and listens only on 127.0.0.1. Not affiliated with Proton AG.",
+        "description": "Unofficial, open-source MCP server for Proton Mail Bridge. An AI agent can search and read mail and write drafts. Moving, deleting or sending needs a single-use token bound to the exact previewed messages and the user's approval; undo_action reverses a logged change at the user's request, with no token. Runs on the user's computer and listens only on 127.0.0.1. Not affiliated with Proton AG.",
         "url": "https://manajev.com/proton-mail-mcp/",
         "applicationCategory": "DeveloperApplication",
         "applicationSubCategory": "Model Context Protocol (MCP) server",
@@ -963,7 +963,7 @@
         <p class="lede">
           An open-source MCP server that runs on your computer, next to Proton Mail Bridge. Your agent
           can search, read and draft. To move, delete or send mail it needs a single-use token tied to
-          the exact messages you approved.
+          the exact messages you approved; <code>undo_action</code>, when you ask, needs none.
         </p>
 
         <section class="install" aria-labelledby="install-h">

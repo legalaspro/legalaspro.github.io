@@ -1,6 +1,6 @@
 # mcp-proton-mail
 
-> Unofficial, open-source MCP server for Proton Mail Bridge. An AI agent can search and read mail and write drafts. Moving, deleting or sending mail needs a single-use token bound to the exact previewed messages, and the person's approval in their MCP client. It runs on the person's own computer, under the same login as Bridge, and listens only on 127.0.0.1. Nothing is hosted. Unofficial, not affiliated with Proton AG.
+> Unofficial, open-source MCP server for Proton Mail Bridge. An AI agent can search and read mail and write drafts. Moving, deleting or sending mail needs a single-use token bound to the exact previewed messages, and the person's approval in their MCP client; `undo_action` reverses a logged change at the person's request, with no token. It runs on the person's own computer, under the same login as Bridge, and listens only on 127.0.0.1. Nothing is hosted. Unofficial, not affiliated with Proton AG.
 
 - PyPI package: `mcp-proton-mail`, version 1.30.0. Its command is `proton-mail-mcp`, also installed as `mcp-proton-mail`.
 - MCP Registry name: `io.github.legalaspro/proton-mail-mcp`

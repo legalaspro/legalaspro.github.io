@@ -35,12 +35,12 @@ Install and connect a client: `uvx mcp-proton-mail setup --client <client>`. Add
 | Claude Desktop | `claude-desktop` | `claude_desktop_config.json` | No |
 | Claude Code | `claude-code` | `~/.claude.json` (via `claude mcp add --scope user` when on PATH) | No |
 | ChatGPT Mac app | `chatgpt` | `~/.codex/config.toml`, shared with Codex; direct HTTP | Yes, file is owner-only |
-| Codex | `codex` | `~/.codex/config.toml` (via `codex mcp add` when on PATH) | No |
+| Codex | `codex` | `~/.codex/config.toml` (via `codex mcp add` when on PATH) | No, unless ChatGPT is set up too: Codex then uses ChatGPT's entry |
 | Gemini CLI | `gemini` | `~/.gemini/settings.json` (via `gemini mcp add --scope user` when on PATH) | No |
 | Cursor | `cursor` | `~/.cursor/mcp.json` | No |
 | Grok Bot and other local agents | `grok-bot` | None; setup shows the entry for the agent to add | No |
 
-Every client but ChatGPT starts `proton-mail-mcp connect` by absolute path (Linux: `~/.local/share/proton-mail-mcp/venv/bin/proton-mail-mcp connect --env-file ~/.config/proton-mail-mcp/proton-mail-mcp.env`), a local stdio relay that reads the token itself, so its config holds no token. Codex and ChatGPT need `tool_timeout_sec = 150` added by hand.
+Every client but ChatGPT starts `proton-mail-mcp connect` by absolute path (Linux: `~/.local/share/proton-mail-mcp/venv/bin/proton-mail-mcp connect --env-file ~/.config/proton-mail-mcp/proton-mail-mcp.env`), a local stdio relay that reads the token itself, so its config holds no token. Codex and the ChatGPT app share one `[mcp_servers.proton-mail]` entry, so once ChatGPT is set up, Codex uses its HTTP entry and token. Codex and ChatGPT need `tool_timeout_sec = 150` added by hand.
 
 Any other client on the same computer can use MCP Streamable HTTP at `http://127.0.0.1:8765/mcp` with `Authorization: Bearer <token>`; `uvx mcp-proton-mail show-token --copy` puts the token on the clipboard. A client in someone else's cloud cannot reach it.
 
@@ -55,9 +55,9 @@ The agent should call `count_mail` and `search_mail`, which change nothing and m
 ## Safety model
 
 - Reading changes nothing: search and read open mailboxes read-only and never mark mail as read.
-- Every mailbox change takes two steps. A preview returns the count, samples, target and a single-use token bound by a SHA-256 hash to exactly those messages and that action; tokens live in memory and expire after 10 minutes by default. The client then shows a form with the stored change; declining or a timeout retires the token. Before acting, the server re-reads the messages and refuses if anything differs. A client that answers forms automatically defeats this check.
+- Apart from saving drafts or attachments and `undo_action`, every change takes two steps: a preview, then the matching tool with the preview's single-use token, after the person's OK. A mailbox preview returns the count, samples, target and a token bound by a SHA-256 hash to exactly those messages and that action; tokens live in memory and expire after 10 minutes by default. For mailbox changes and saved rules the client then shows a form with the stored change (`reindex` has none); declining or a timeout retires the token. Before acting, the server re-reads the messages and refuses if anything differs. A client that answers forms automatically defeats this check.
 - Moves, archive, trash, read state and labels, including the moves folder rules made, can be undone once with `undo_action`. Sending, draft deletion, unsubscribe, new folders and saved rules cannot.
-- Sending is off by default (`PROTON_MCP_ENABLE_SEND=1` turns it on, with `PROTON_MCP_SEND_FROM` and `PROTON_BRIDGE_CERT`). The only path is `create_draft` -> `preview_send` -> approval -> `send_draft`, through Bridge on 127.0.0.1. The send token covers the exact draft bytes and recipients and lasts 5 minutes by default; any edit after the preview refuses.
+- Sending is off by default (`PROTON_MCP_ENABLE_SEND=1` turns it on, with `PROTON_MCP_SEND_FROM` and `PROTON_BRIDGE_CERT`). The only path is a saved draft -> `preview_send` -> approval -> `send_draft`, through Bridge on 127.0.0.1. The send token covers the exact draft bytes and recipients and lasts 5 minutes by default; any edit after the preview refuses.
 - A send is approved in the client's form, or, on a client that declares no form, by an OK the person types in chat. The server cannot prove a person typed that OK. `PROTON_MCP_SEND_TYPED_OK=0` turns that path off.
 - Every write call goes into an append-only audit log without message bodies, subjects, full addresses or tokens.
 - There is no tool to empty Trash or to delete or rename a mailbox. Permanent deletion reaches only approved drafts.
@@ -69,7 +69,7 @@ The agent should call `count_mail` and `search_mail`, which change nothing and m
 
 - Read (changes nothing): `search_mail` (search one folder, newest first), `count_mail` (count matches), `read_thread` (message or thread as text), `show_thread` (read-only thread view), `list_attachments` (name, type, size; downloads nothing), `read_attachment` (text from PDF, TXT or CSV, or an image), `list_from_addresses` (From addresses a draft can use), `list_rules` (beta; folder rules in run order), `list_actions` (logged changes and audited write calls), `reindex_status` (search-index rebuild progress).
 - Draft (never sends, logged): `create_draft` (save an unsent draft), `compose_reply` (reply composer view; saves unsent drafts only), `forward_message` (unsent forward with chosen attachments), `save_attachment` (save one attachment, up to 25 MiB, to the one allowed folder).
-- Change with approval (preview, token, form): `preview_action` then `move` (move, archive or trash), `set_read_state`, `label`, `delete_draft` or `unsubscribe`; `preview_create_folder` then `create_folder`; `preview_rules` then `apply_rules` (both beta); `preview_add_rule` then `add_rule` (both beta); `preview_sieve_filter` then `create_sieve_filter`, which always refuses on Bridge; `reindex` (preview, start or cancel; no form, mail never changes); `undo_action` (reverse a logged change once; no token or form, logged).
+- Change with approval (preview, token, form, except where noted): `preview_action` then `move` (move, archive or trash), `set_read_state`, `label`, `delete_draft` or `unsubscribe`; `preview_create_folder` then `create_folder`; `preview_rules` then `apply_rules` (both beta); `preview_add_rule` then `add_rule` (both beta); `preview_sieve_filter` then `create_sieve_filter`, which always refuses on Bridge; `reindex` (preview, start or cancel; no form, mail never changes); `undo_action` (reverse a logged change once; no token or form, logged).
 - Send (only with `PROTON_MCP_ENABLE_SEND=1`): `preview_send` (preview a draft, get its send token), `review_send` (send review view, no token), `send_draft` (send once after approval).
 
 MCP Apps clients get three views: a read-only thread view (links show their real address before opening), a reply composer (saves unsent drafts, cannot send) and a send review (no token). Views load nothing from the network and never hold approval tokens. Other clients get the same results as text.

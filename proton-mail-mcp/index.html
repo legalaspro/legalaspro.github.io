@@ -24,7 +24,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="manajev.com" />
     <meta property="og:url" content="https://manajev.com/proton-mail-mcp/" />
-    <meta property="og:title" content="mcp-proton-mail — Proton Mail for your AI agent, with your approval on every change" />
+    <meta property="og:title" content="mcp-proton-mail — Proton Mail for your AI agent. Nothing moves or sends until you approve" />
     <meta
       property="og:description"
       content="Open-source MCP server for Proton Mail Bridge. Runs on your computer; nothing moves or sends until you approve the exact messages. Unofficial, not affiliated with Proton AG."
@@ -34,7 +34,7 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="mcp-proton-mail: Proton Mail for your AI agent. Nothing moves or sends until you approve." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="mcp-proton-mail — Proton Mail for your AI agent, with your approval on every change" />
+    <meta name="twitter:title" content="mcp-proton-mail — Proton Mail for your AI agent. Nothing moves or sends until you approve" />
     <meta
       name="twitter:description"
       content="Open-source MCP server for Proton Mail Bridge. Runs on your computer; nothing moves or sends until you approve the exact messages. Unofficial."
@@ -867,6 +867,13 @@
         .cmd.big pre {
           font-size: 14px;
         }
+        /* Only the install command stays on one line; the others wrap, so a --client name shows. */
+        .cmd:not(.big) pre {
+          white-space: pre-wrap;
+        }
+        .cmd .nw {
+          white-space: nowrap;
+        }
         .copy {
           min-width: 58px;
           padding: 0 10px;
@@ -991,7 +998,7 @@
         </dl>
         <p class="namecheck">
           It ships only as the PyPI package <code>mcp-proton-mail</code> and its GitHub source, with no
-          app download or .exe. Apache-2.0. Unofficial, not affiliated with Proton AG.
+          app or .exe.
         </p>
         <p class="agents">
           <span>For agents:</span>
@@ -1003,9 +1010,9 @@
       <section class="block" id="setup" aria-labelledby="setup-h">
         <h2 id="setup-h">Connect your client</h2>
         <p class="intro">
-          Setup writes the config for seven clients. Each entry starts
+          Setup connects seven clients. Every entry but ChatGPT’s starts
           <code>proton-mail-mcp connect</code>, a local relay that reads the token itself, so the
-          config holds no password or token (ChatGPT’s is the exception).
+          config holds no password or token.
         </p>
 
         <div class="stack">
@@ -1014,12 +1021,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-cd-1">uvx mcp-proton-mail setup --client claude-desktop</code></pre>
+                <pre><code id="c-cd-1">uvx mcp-proton-mail setup <span class="nw">--client claude-desktop</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cd-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-cd-2">uvx mcp-proton-mail configure-client --client claude-desktop</code></pre>
+                <pre><code id="c-cd-2">uvx mcp-proton-mail configure-client <span class="nw">--client claude-desktop</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cd-2" hidden>Copy</button>
               </div>
               <p class="label">Entry it writes <span class="sub">· Linux paths</span></p>
@@ -1048,12 +1055,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-cc-1">uvx mcp-proton-mail setup --client claude-code</code></pre>
+                <pre><code id="c-cc-1">uvx mcp-proton-mail setup <span class="nw">--client claude-code</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cc-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-cc-2">uvx mcp-proton-mail configure-client --client claude-code</code></pre>
+                <pre><code id="c-cc-2">uvx mcp-proton-mail configure-client <span class="nw">--client claude-code</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cc-2" hidden>Copy</button>
               </div>
               <p class="label">Same thing by hand <span class="sub">· Linux paths</span></p>
@@ -1075,12 +1082,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-gpt-1">uvx mcp-proton-mail setup --client chatgpt</code></pre>
+                <pre><code id="c-gpt-1">uvx mcp-proton-mail setup <span class="nw">--client chatgpt</span></code></pre>
                 <button class="copy" type="button" data-copy="c-gpt-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-gpt-2">uvx mcp-proton-mail configure-client --client chatgpt</code></pre>
+                <pre><code id="c-gpt-2">uvx mcp-proton-mail configure-client <span class="nw">--client chatgpt</span></code></pre>
                 <button class="copy" type="button" data-copy="c-gpt-2" hidden>Copy</button>
               </div>
               <p class="label">Entry it writes</p>
@@ -1110,12 +1117,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-cx-1">uvx mcp-proton-mail setup --client codex</code></pre>
+                <pre><code id="c-cx-1">uvx mcp-proton-mail setup <span class="nw">--client codex</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cx-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-cx-2">uvx mcp-proton-mail configure-client --client codex</code></pre>
+                <pre><code id="c-cx-2">uvx mcp-proton-mail configure-client <span class="nw">--client codex</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cx-2" hidden>Copy</button>
               </div>
               <p class="label">Entry it writes <span class="sub">· Linux paths</span></p>
@@ -1140,12 +1147,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-gm-1">uvx mcp-proton-mail setup --client gemini</code></pre>
+                <pre><code id="c-gm-1">uvx mcp-proton-mail setup <span class="nw">--client gemini</span></code></pre>
                 <button class="copy" type="button" data-copy="c-gm-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-gm-2">uvx mcp-proton-mail configure-client --client gemini</code></pre>
+                <pre><code id="c-gm-2">uvx mcp-proton-mail configure-client <span class="nw">--client gemini</span></code></pre>
                 <button class="copy" type="button" data-copy="c-gm-2" hidden>Copy</button>
               </div>
               <p class="label">Same thing by hand <span class="sub">· Linux paths</span></p>
@@ -1167,12 +1174,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-cu-1">uvx mcp-proton-mail setup --client cursor</code></pre>
+                <pre><code id="c-cu-1">uvx mcp-proton-mail setup <span class="nw">--client cursor</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cu-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-cu-2">uvx mcp-proton-mail configure-client --client cursor</code></pre>
+                <pre><code id="c-cu-2">uvx mcp-proton-mail configure-client <span class="nw">--client cursor</span></code></pre>
                 <button class="copy" type="button" data-copy="c-cu-2" hidden>Copy</button>
               </div>
               <p class="label">Entry it writes <span class="sub">· Linux paths</span></p>
@@ -1200,12 +1207,12 @@
             <div class="body">
               <p class="label">New install</p>
               <div class="cmd">
-                <pre><code id="c-gb-1">uvx mcp-proton-mail setup --client grok-bot</code></pre>
+                <pre><code id="c-gb-1">uvx mcp-proton-mail setup <span class="nw">--client grok-bot</span></code></pre>
                 <button class="copy" type="button" data-copy="c-gb-1" hidden>Copy</button>
               </div>
               <p class="label">Already set up</p>
               <div class="cmd">
-                <pre><code id="c-gb-2">uvx mcp-proton-mail configure-client --client grok-bot</code></pre>
+                <pre><code id="c-gb-2">uvx mcp-proton-mail configure-client <span class="nw">--client grok-bot</span></code></pre>
                 <button class="copy" type="button" data-copy="c-gb-2" hidden>Copy</button>
               </div>
               <p class="label">Entry to add <span class="sub">· Linux paths</span></p>
@@ -1301,9 +1308,10 @@
           <li><span class="arr" aria-hidden="true">↔</span> <span class="step">Proton</span></li>
         </ol>
         <p>
-          Every change needs a single-use token issued for one exact preview, and your OK in your
-          client’s form. The server then reads the messages again and refuses if anything differs.
-          Moves, labels and read state can be undone once.
+          Apart from saving drafts or attachments and <code>undo_action</code>, every change needs a
+          preview, a single-use token tied to it, and your OK in your client’s form
+          (<code>reindex</code> has none). The server then reads the messages again and refuses if
+          anything differs. Moves, labels and read state can be undone once.
         </p>
         <ol class="chain" aria-label="Approval path">
           <li><span class="step">preview_action</span></li>
@@ -1316,13 +1324,13 @@
           and recipients:
         </p>
         <ol class="chain" aria-label="Send path">
-          <li><span class="step">create_draft</span></li>
+          <li><span class="step">a saved draft</span></li>
           <li><span class="arr" aria-hidden="true">→</span> <span class="step">preview_send</span></li>
           <li class="you"><span class="arr" aria-hidden="true">→</span> <span class="step">your approval</span></li>
           <li><span class="arr" aria-hidden="true">→</span> <span class="step">send_draft</span></li>
         </ol>
         <ul class="facts">
-          <li><b>Passwords and tokens</b> stay in Keychain, libsecret, pass or Windows Credential Manager.</li>
+          <li><b>Passwords and tokens</b> stay in Keychain, libsecret, pass or Windows Credential Manager, except the ChatGPT entry’s token.</li>
           <li><b>No tool empties Trash</b> or deletes a folder; permanent deletion reaches only drafts you approved.</li>
           <li><b>The audit log</b> records every write call, with no bodies, subjects, full addresses or tokens.</li>
           <li><b>What does leave:</b> mail your agent reads goes wherever its model runs.</li>
@@ -1349,10 +1357,9 @@
       <section class="block" id="tools" aria-labelledby="tools-h">
         <h2 id="tools-h">30 tools, 33 with sending on</h2>
         <p class="intro">
-          Names from version 1.30.0. Every tool that changes mail has a preview in front of it.
-          <code>show_thread</code>, <code>compose_reply</code> and <code>review_send</code> also open
-          as views in MCP Apps clients (on by default, and counted); views load nothing from the
-          network and never hold a token.
+          Names from version 1.30.0. <code>show_thread</code>, <code>compose_reply</code> and
+          <code>review_send</code> also open as views in MCP Apps clients (on by default, and
+          counted); views load nothing from the network and never hold a token.
         </p>
 
         <div class="group" id="tools-read">
@@ -1365,7 +1372,7 @@
             <li><code>list_attachments</code></li>
             <li><code>read_attachment</code></li>
             <li><code>list_from_addresses</code></li>
-            <li><code>list_rules</code></li>
+            <li><code>list_rules</code> <span class="tag">beta</span></li>
             <li><code>list_actions</code></li>
             <li><code>reindex_status</code></li>
           </ul>
@@ -1406,7 +1413,7 @@
         </div>
 
         <div class="group" id="tools-act">
-          <h3>Act <span>16 tools, 19 with sending on · preview, single-use token, your approval</span></h3>
+          <h3>Act <span>16 tools, 19 with sending on · preview, single-use token, your approval; undo_action needs none</span></h3>
           <ul class="names">
             <li><code>preview_action</code></li>
             <li><code>move</code></li>
@@ -1416,10 +1423,10 @@
             <li><code>unsubscribe</code></li>
             <li><code>preview_create_folder</code></li>
             <li><code>create_folder</code></li>
-            <li><code>preview_rules</code></li>
-            <li><code>apply_rules</code></li>
-            <li><code>preview_add_rule</code></li>
-            <li><code>add_rule</code></li>
+            <li><code>preview_rules</code> <span class="tag">beta</span></li>
+            <li><code>apply_rules</code> <span class="tag">beta</span></li>
+            <li><code>preview_add_rule</code> <span class="tag">beta</span></li>
+            <li><code>add_rule</code> <span class="tag">beta</span></li>
             <li><code>preview_sieve_filter</code></li>
             <li><code>create_sieve_filter</code></li>
             <li><code>reindex</code></li>

@@ -110,7 +110,7 @@ exact entry for this computer and changes nothing; ChatGPT's token shows as a pl
 | Claude Desktop | `claude-desktop` | `claude_desktop_config.json` | No |
 | Claude Code | `claude-code` | `~/.claude.json`, via `claude mcp add --scope user` when on PATH | No |
 | ChatGPT Mac app | `chatgpt` | `~/.codex/config.toml`, shared with Codex; direct HTTP | Yes, file is owner-only |
-| Codex | `codex` | `~/.codex/config.toml`, via `codex mcp add` when on PATH | No |
+| Codex | `codex` | `~/.codex/config.toml`, via `codex mcp add` when on PATH | No, unless ChatGPT is set up too: Codex then uses ChatGPT's entry |
 | Gemini CLI | `gemini` | `~/.gemini/settings.json`, via `gemini mcp add --scope user` when on PATH | No |
 | Cursor | `cursor` | `~/.cursor/mcp.json` | No |
 | Grok Bot and other local agents | `grok-bot` | None; setup shows the entry to add | No |
@@ -137,11 +137,12 @@ It should call `count_mail` and `search_mail`, which read only and mark nothing 
 
 ## 7. After install
 
-- Every mailbox change needs a preview, a single-use token bound to the exact messages, and the
-  person's acceptance in the client's form. Show the preview to the person; never answer the form
-  for them.
+- Apart from saving drafts or attachments and `undo_action`, every change needs a preview, a
+  single-use token tied to it, and the person's OK. For mailbox changes and saved rules, the
+  client's form asks for that OK. Show the preview to the person and wait for their OK; never
+  answer the form for them. Call `undo_action` only when the person asks.
 - Sending is off by default. Do not set `PROTON_MCP_ENABLE_SEND=1` unless the person asks for it;
-  see https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/sending.md.
+  see [Sending mail](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/sending.md).
 - Mail you read becomes part of your conversation and goes wherever your model runs. Read only
   what the task needs.
 

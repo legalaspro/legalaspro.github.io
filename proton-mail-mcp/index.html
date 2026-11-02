@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- mcp-name: io.github.legalaspro/proton-mail-mcp -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mcp-proton-mail — Proton Mail MCP server for AI agents, local via Bridge</title>
+    <meta
+      name="description"
+      content="Open-source MCP server for Proton Mail. AI agents search, read and draft mail through Proton Mail Bridge on your own computer. Changes need your approval; sending is off by default. Unofficial."
+    />
+    <meta name="author" content="Dmitri Manajev" />
+    <meta name="robots" content="index,follow" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#FAFAF9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://manajev.com/proton-mail-mcp/" />
+    <link rel="alternate" type="text/plain" href="/proton-mail-mcp/llms.txt" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="manajev.com" />
+    <meta property="og:url" content="https://manajev.com/proton-mail-mcp/" />
+    <meta property="og:title" content="mcp-proton-mail — your Proton Mail, for your AI agent. Locally." />
+    <meta
+      property="og:description"
+      content="An open-source MCP server that lets agents read, search and draft mail through Proton Bridge, on your own computer. Unofficial, not affiliated with Proton AG."
+    />
+    <meta property="og:image" content="https://manajev.com/proton-mail-mcp/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="mcp-proton-mail: Your Proton Mail, for your AI agent. Locally." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="mcp-proton-mail — your Proton Mail, for your AI agent. Locally." />
+    <meta
+      name="twitter:description"
+      content="An open-source MCP server that lets agents read, search and draft mail through Proton Bridge, on your own computer. Unofficial."
+    />
+    <meta name="twitter:image" content="https://manajev.com/proton-mail-mcp/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": ["SoftwareApplication", "SoftwareSourceCode"],
+        "name": "mcp-proton-mail",
+        "alternateName": "proton-mail-mcp",
+        "description": "Unofficial, open-source MCP server for Proton Mail Bridge: search and read mail, write drafts, and change the mailbox only after the user approves a preview. Runs locally and listens only on 127.0.0.1.",
+        "url": "https://manajev.com/proton-mail-mcp/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Linux, macOS, Windows",
+        "softwareVersion": "1.30.0",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "codeRepository": "https://github.com/legalaspro/proton-mail-mcp",
+        "programmingLanguage": "Python",
+        "runtimePlatform": "Python 3.12 or newer",
+        "downloadUrl": "https://pypi.org/project/mcp-proton-mail/",
+        "sameAs": [
+          "https://github.com/legalaspro/proton-mail-mcp",
+          "https://pypi.org/project/mcp-proton-mail/"
+        ],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Person", "name": "Dmitri Manajev", "url": "https://manajev.com" }
+      }
+    </script>
+
+    <style>
+      :root {
+        --bg: #fafaf9;
+        --text: #111;
+        --muted: #6b6b6b;
+        --accent: #6d4aff;
+        --link: #6d4aff;
+        --line: #e4e4e1;
+        --code-bg: #f1f1ef;
+        --box: #fff;
+        --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+          sans-serif;
+        --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+          monospace;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e0e10;
+          --text: #ededef;
+          --muted: #9c9ca3;
+          --link: #a08bff;
+          --line: #2a2a2f;
+          --code-bg: #17171a;
+          --box: #141417;
+        }
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 17px/1.6 var(--sans);
+        -webkit-font-smoothing: antialiased;
+        overflow-wrap: break-word;
+      }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      a {
+        color: var(--link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: -9999px;
+      }
+      .skip:focus {
+        left: 24px;
+        top: 12px;
+      }
+      code,
+      pre {
+        font-family: var(--mono);
+      }
+      code {
+        font-size: 0.86em;
+        background: var(--code-bg);
+        border-radius: 5px;
+        padding: 0.1em 0.35em;
+        overflow-wrap: anywhere;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .small {
+        font-size: 15px;
+      }
+
+      /* Top line and hero */
+      .topline {
+        margin: 0;
+        padding-top: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .hero {
+        padding-top: 88px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 56px;
+        line-height: 60px;
+        font-weight: 600;
+        letter-spacing: -0.022em;
+      }
+      .lede {
+        margin: 24px 0 0;
+        font-size: 21px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      /* Command bars */
+      .cmd {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 40px 0 0;
+        padding: 12px 12px 12px 18px;
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .cmd pre {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+        padding: 4px 0;
+        font-size: 15px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .cmd .w {
+        white-space: nowrap;
+      }
+      .copy {
+        flex: none;
+        font: 500 14px/1 var(--sans);
+        color: #fff;
+        background: var(--accent);
+        border: 0;
+        border-radius: 8px;
+        padding: 9px 14px;
+        cursor: pointer;
+      }
+      .copy:hover {
+        filter: brightness(1.08);
+      }
+      .req {
+        margin: 16px 0 0;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      /* Sections */
+      section {
+        margin-top: 112px;
+      }
+      h2 {
+        margin: 0 0 20px;
+        font-size: 28px;
+        line-height: 1.25;
+        font-weight: 600;
+        letter-spacing: -0.012em;
+      }
+      h3 {
+        margin: 40px 0 8px;
+        font-size: 19px;
+        line-height: 1.4;
+        font-weight: 600;
+      }
+      p {
+        margin: 0 0 16px;
+      }
+      .intro {
+        font-size: 19px;
+        line-height: 1.55;
+      }
+
+      /* Safety list */
+      .facts {
+        list-style: none;
+        margin: 32px 0 0;
+        padding: 0;
+      }
+      .facts li {
+        padding: 14px 0;
+        border-top: 1px solid var(--line);
+      }
+      .facts li:last-child {
+        border-bottom: 1px solid var(--line);
+      }
+      .facts strong {
+        font-weight: 600;
+      }
+
+      /* Diagram */
+      .diagram {
+        margin: 40px 0 0;
+      }
+      .flow {
+        display: flex;
+        align-items: center;
+      }
+      .machine {
+        flex: 3.6;
+        min-width: 0;
+        position: relative;
+        border: 1px dashed var(--muted);
+        border-radius: 14px;
+        padding: 30px 12px 14px;
+      }
+      .machine-label {
+        position: absolute;
+        top: -11px;
+        left: 14px;
+        margin: 0;
+        padding: 0 8px;
+        background: var(--bg);
+        font-size: 13px;
+        line-height: 20px;
+        color: var(--muted);
+      }
+      .nodes {
+        display: flex;
+        align-items: stretch;
+      }
+      .node {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+        padding: 12px 10px;
+        text-align: center;
+        background: var(--box);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+      .node b {
+        display: block;
+        font-size: 15px;
+        line-height: 1.35;
+        font-weight: 600;
+      }
+      .node span {
+        display: block;
+        margin-top: 2px;
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--muted);
+      }
+      .nodes .node:nth-child(3) {
+        flex: 1.3;
+      }
+      .arrow {
+        flex: none;
+        align-self: center;
+        width: 26px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .arrow::before {
+        content: "\2192";
+      }
+      .remote {
+        flex: 1;
+      }
+      .diagram figcaption {
+        margin-top: 20px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      /* Clients */
+      .clients {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 28px;
+        margin: 0;
+        padding: 0;
+        font-size: 19px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      /* Tabs */
+      .tablist {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 22px;
+        margin: 0 0 8px;
+        border-bottom: 1px solid var(--line);
+      }
+      .tablist[hidden] {
+        display: none;
+      }
+      [role="tab"] {
+        margin: 0 0 -1px;
+        padding: 12px 0 11px;
+        font: 500 15px/1.2 var(--sans);
+        color: var(--muted);
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+      }
+      [role="tab"][aria-selected="true"] {
+        color: var(--text);
+        border-bottom-color: var(--text);
+      }
+      .panel .cmd {
+        margin-top: 16px;
+      }
+      .panel p {
+        margin: 14px 0 0;
+      }
+      .tabs-on .panel-title {
+        display: none;
+      }
+      .after-tabs {
+        margin-top: 32px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .after-tabs p {
+        margin: 0 0 10px;
+      }
+
+      /* Screenshots */
+      .shot {
+        margin: 36px 0 0;
+      }
+      .placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 16 / 10;
+        padding: 24px;
+        text-align: center;
+        font-size: 15px;
+        color: var(--muted);
+        border: 1px dashed var(--muted);
+        border-radius: 12px;
+      }
+      .shot figcaption {
+        margin-top: 12px;
+      }
+
+      /* Tools */
+      .group {
+        margin: 40px 0 0;
+      }
+      .group h3 {
+        margin: 0 0 4px;
+      }
+      .group > p {
+        margin: 0 0 12px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      dl {
+        margin: 0;
+      }
+      dl > div {
+        display: grid;
+        grid-template-columns: 210px 1fr;
+        gap: 2px 24px;
+        padding: 10px 0;
+        border-top: 1px solid var(--line);
+      }
+      dt {
+        min-width: 0;
+        font-family: var(--mono);
+        font-size: 14px;
+        line-height: 27px;
+        overflow-wrap: anywhere;
+      }
+      dt span {
+        display: block;
+      }
+      dd {
+        margin: 0;
+        min-width: 0;
+        line-height: 27px;
+      }
+
+      /* Links */
+      .links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .links li {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 0 24px;
+        padding: 10px 0;
+        border-top: 1px solid var(--line);
+      }
+      .links li > span {
+        color: var(--muted);
+      }
+      .links a {
+        overflow-wrap: anywhere;
+      }
+
+      /* FAQ */
+      details {
+        border-top: 1px solid var(--line);
+      }
+      details:last-of-type {
+        border-bottom: 1px solid var(--line);
+      }
+      summary {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 0;
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        flex: none;
+        color: var(--muted);
+        font-weight: 400;
+      }
+      details[open] summary::after {
+        content: "\2212";
+      }
+      details > div {
+        padding: 0 0 12px;
+      }
+
+      /* Footer */
+      footer {
+        margin-top: 120px;
+        padding: 32px 0 56px;
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      footer p {
+        margin: 0 0 6px;
+      }
+
+      @media (max-width: 640px) {
+        .wrap {
+          padding: 0 20px;
+        }
+        .hero {
+          padding-top: 56px;
+        }
+        h1 {
+          font-size: 36px;
+          line-height: 40px;
+        }
+        .lede {
+          font-size: 19px;
+        }
+        section {
+          margin-top: 80px;
+        }
+        h2 {
+          font-size: 24px;
+        }
+        .cmd pre {
+          font-size: 14px;
+        }
+        .flow,
+        .nodes {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .machine {
+          padding: 28px 14px 14px;
+        }
+        .arrow {
+          width: auto;
+          height: 28px;
+          line-height: 28px;
+        }
+        .arrow::before {
+          content: "\2193";
+        }
+        dl > div,
+        .links li {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          margin-top: 88px;
+        }
+      }
+      @media print {
+        .copy,
+        .tablist {
+          display: none !important;
+        }
+        .panel[hidden] {
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="wrap">
+      <header>
+        <p class="topline">Unofficial, not affiliated with Proton AG.</p>
+      </header>
+
+      <main id="main">
+        <div class="hero">
+          <h1>Your Proton Mail, for your AI agent. Locally.</h1>
+          <p class="lede">
+            An open-source MCP server that lets agents read, search and draft mail through Proton
+            Bridge. It runs on your machine, and nothing is hosted.
+          </p>
+
+          <div class="cmd">
+            <pre id="cmd-install"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">claude-desktop</span></code></pre>
+            <button class="copy" type="button" data-copy="cmd-install" hidden>Copy</button>
+          </div>
+          <p class="req">
+            Needs a paid Proton plan (Bridge requires one), <a href="https://docs.astral.sh/uv/">uv</a>,
+            and Linux or macOS. Windows support is new:
+            <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/windows.md">read docs/windows.md</a>
+            first. Run it in your own terminal: it prints its plan and changes nothing until you
+            approve. Using another client? <a href="#setup">Pick it below</a>.
+          </p>
+        </div>
+
+        <section id="safety" aria-labelledby="safety-h">
+          <h2 id="safety-h">How it keeps your mail safe</h2>
+          <p class="intro">
+            Reading your mail changes nothing. Every change waits until you approve a preview.
+            Sending is off until you turn it on.
+          </p>
+          <ul class="facts">
+            <li>
+              <strong>Reading changes nothing.</strong> Search and read open mailboxes read-only and
+              never mark mail as read.
+            </li>
+            <li>
+              <strong>Changes take two steps.</strong> First a preview shows the count, samples and
+              target, and returns a single-use, short-lived token bound to exactly those messages.
+              The server checks them again before acting and refuses if anything differs. Then your
+              client shows a form with the exact change, and declining retires the token. Moves,
+              labels and read state can be undone once with <code>undo_action</code>.
+            </li>
+            <li>
+              <strong>Sending is off by default.</strong> When you turn it on, the only path is
+              <code>create_draft</code> → <code>preview_send</code> → <code>send_draft</code>. Any
+              edit after the preview refuses.
+            </li>
+            <li>
+              <strong>You approve each send</strong> in the client’s form, or by typing OK in chat
+              when the client has no form. The server cannot prove that a human typed the OK: only
+              the assistant reports it. <code>PROTON_MCP_SEND_TYPED_OK=0</code> turns that path off.
+            </li>
+            <li>
+              <strong>A form is only as good as the client.</strong> A client that answers forms by
+              itself defeats this check.
+            </li>
+            <li>
+              <strong>Every write is logged</strong> in an append-only audit log, with no message
+              bodies, subjects, full addresses or tokens.
+            </li>
+            <li>
+              <strong>There is no tool to empty Trash</strong>, or to delete or rename a mailbox.
+              Permanent deletion reaches only drafts you approved.
+            </li>
+            <li>
+              <strong>It runs on your computer</strong>, under the same login as Bridge, and listens
+              only on <code>127.0.0.1</code>. Nothing is hosted.
+            </li>
+          </ul>
+          <p class="small" style="margin-top: 20px">
+            <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/safety.md">How approvals work</a>
+            ·
+            <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/sending.md">Sending mail</a>
+          </p>
+        </section>
+
+        <section id="how" aria-labelledby="how-h">
+          <h2 id="how-h">Where your mail goes</h2>
+          <figure class="diagram">
+            <div class="flow">
+              <div class="machine">
+                <p class="machine-label">Your computer</p>
+                <div class="nodes">
+                  <p class="node"><b>Your agent</b><span>MCP client</span></p>
+                  <div class="arrow" aria-hidden="true"></div>
+                  <p class="node"><b>mcp-proton-mail</b><span>127.0.0.1 only</span></p>
+                  <div class="arrow" aria-hidden="true"></div>
+                  <p class="node"><b>Proton Bridge</b><span>on your computer</span></p>
+                </div>
+              </div>
+              <div class="arrow" aria-hidden="true"></div>
+              <p class="node remote"><b>Proton</b><span>your mailbox</span></p>
+            </div>
+            <figcaption>
+              Your MCP client runs on the same computer; a client in someone else’s cloud cannot
+              reach <code>127.0.0.1</code>. Bridge talks to Proton as it always does. Mail your
+              agent reads becomes part of its conversation, so it goes wherever your agent’s model
+              runs.
+            </figcaption>
+          </figure>
+        </section>
+
+        <section id="clients" aria-labelledby="clients-h">
+          <h2 id="clients-h">Works with</h2>
+          <ul class="clients">
+            <li>Claude Desktop</li>
+            <li>Claude Code</li>
+            <li>ChatGPT Mac app</li>
+            <li>Codex</li>
+            <li>Cursor</li>
+            <li>Gemini CLI</li>
+            <li>Grok Bot</li>
+          </ul>
+          <p class="small muted" style="margin-top: 20px">
+            Setup adds the server to each of these; for Grok Bot it shows the entry to add. Any
+            other client on the same computer can connect over MCP Streamable HTTP at <code>http://127.0.0.1:8765/mcp</code> with a bearer
+            token.
+          </p>
+        </section>
+
+        <section id="setup" aria-labelledby="setup-h">
+          <h2 id="setup-h">Set up your client</h2>
+          <div class="tabs" data-tabs>
+            <div class="tablist" role="tablist" aria-label="MCP client" hidden>
+              <button type="button" role="tab" id="tab-claude-desktop" aria-controls="client-claude-desktop" aria-selected="true">Claude Desktop</button>
+              <button type="button" role="tab" id="tab-claude-code" aria-controls="client-claude-code" aria-selected="false" tabindex="-1">Claude Code</button>
+              <button type="button" role="tab" id="tab-cursor" aria-controls="client-cursor" aria-selected="false" tabindex="-1">Cursor</button>
+              <button type="button" role="tab" id="tab-codex" aria-controls="client-codex" aria-selected="false" tabindex="-1">Codex</button>
+              <button type="button" role="tab" id="tab-gemini" aria-controls="client-gemini" aria-selected="false" tabindex="-1">Gemini CLI</button>
+              <button type="button" role="tab" id="tab-chatgpt" aria-controls="client-chatgpt" aria-selected="false" tabindex="-1">ChatGPT</button>
+            </div>
+
+            <div class="panel" id="client-claude-desktop">
+              <h3 class="panel-title">Claude Desktop</h3>
+              <div class="cmd">
+                <pre id="cmd-claude-desktop"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">claude-desktop</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-claude-desktop" hidden>Copy</button>
+              </div>
+              <p>
+                Adds a <code>proton-mail</code> entry to <code>claude_desktop_config.json</code>
+                (on macOS in <code>~/Library/Application Support/Claude/</code>). It starts
+                <code>proton-mail-mcp connect</code>, which reads the token itself, so the file holds
+                no token. Then quit Claude Desktop completely and open it again.
+              </p>
+              <p><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/claude-desktop.md">Claude Desktop guide</a></p>
+            </div>
+
+            <div class="panel" id="client-claude-code">
+              <h3 class="panel-title">Claude Code</h3>
+              <div class="cmd">
+                <pre id="cmd-claude-code"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">claude-code</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-claude-code" hidden>Copy</button>
+              </div>
+              <p>
+                Adds a user-scope <code>proton-mail</code> entry to <code>~/.claude.json</code>,
+                through <code>claude mcp add</code> when <code>claude</code> is on your PATH. The
+                file holds no token. Then start a new Claude Code session.
+              </p>
+              <p><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/claude-code.md">Claude Code guide</a></p>
+            </div>
+
+            <div class="panel" id="client-cursor">
+              <h3 class="panel-title">Cursor</h3>
+              <div class="cmd">
+                <pre id="cmd-cursor"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">cursor</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-cursor" hidden>Copy</button>
+              </div>
+              <p>
+                Adds a <code>proton-mail</code> entry to <code>~/.cursor/mcp.json</code>. The file
+                holds no token. Then restart Cursor, or turn <code>proton-mail</code> off and on
+                under Cursor Settings › MCP.
+              </p>
+              <p><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/cursor.md">Cursor guide</a></p>
+            </div>
+
+            <div class="panel" id="client-codex">
+              <h3 class="panel-title">Codex</h3>
+              <div class="cmd">
+                <pre id="cmd-codex"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">codex</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-codex" hidden>Copy</button>
+              </div>
+              <p>
+                Adds a <code>[mcp_servers.proton-mail]</code> table to
+                <code>~/.codex/config.toml</code>, through <code>codex mcp add</code> when
+                <code>codex</code> is on your PATH. The file holds no token. Codex waits 60 seconds
+                for a tool by default, so add <code>tool_timeout_sec = 150</code> to that table by
+                hand, then start a new Codex session.
+              </p>
+              <p><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/codex.md">Codex guide</a></p>
+            </div>
+
+            <div class="panel" id="client-gemini">
+              <h3 class="panel-title">Gemini CLI</h3>
+              <div class="cmd">
+                <pre id="cmd-gemini"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">gemini</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-gemini" hidden>Copy</button>
+              </div>
+              <p>
+                Adds a user-scope <code>proton-mail</code> entry to
+                <code>~/.gemini/settings.json</code>, through <code>gemini mcp add</code> when
+                <code>gemini</code> is on your PATH. The file holds no token. Then start a new Gemini
+                CLI session; <code>/mcp</code> should list <code>proton-mail</code>.
+              </p>
+              <p><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/gemini.md">Gemini CLI guide</a></p>
+            </div>
+
+            <div class="panel" id="client-chatgpt">
+              <h3 class="panel-title">ChatGPT Mac app</h3>
+              <div class="cmd">
+                <pre id="cmd-chatgpt"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">setup</span> <span class="w">--client</span> <span class="w">chatgpt</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-chatgpt" hidden>Copy</button>
+              </div>
+              <p>
+                Adds a <code>[mcp_servers.proton-mail]</code> table to
+                <code>~/.codex/config.toml</code>, which it shares with Codex. ChatGPT connects over
+                HTTP, so this entry holds the bearer token, and the file is written owner-only. Add
+                <code>tool_timeout_sec = 150</code> to that table by hand, then quit the ChatGPT app
+                completely and open it again. ChatGPT on the web cannot reach your computer.
+              </p>
+              <p><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/chatgpt.md">ChatGPT guide</a></p>
+            </div>
+          </div>
+
+          <div class="after-tabs">
+            <p>
+              Then ask: “How many unread messages are in my inbox?” Your agent should call
+              <code>count_mail</code>, which reads and changes nothing.
+            </p>
+            <p>
+              Already ran setup? <code>uvx mcp-proton-mail configure-client --client &lt;name&gt;</code>
+              adds another client, keeping the old file as a dated backup. Add
+              <code>--print-config</code> to print the entry and change nothing.
+            </p>
+            <p>
+              Grok Bot, or another agent on the same computer: <code>--client grok-bot</code> shows
+              the entry for the agent to add.
+              <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/grok-bot.md">Grok Bot guide</a>
+              ·
+              <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients.md">All clients</a>
+            </p>
+          </div>
+        </section>
+
+        <section id="views" aria-labelledby="views-h">
+          <h2 id="views-h">Mail in the chat</h2>
+          <p>
+            Clients that support MCP Apps show three views. Every other client gets the same results
+            as text. Views load nothing from the network and never hold approval tokens.
+          </p>
+
+          <figure class="shot">
+            <div class="placeholder"><span>Screenshot placeholder — thread view (<code>show_thread</code>)</span></div>
+            <figcaption>
+              <strong>Thread view.</strong> A read-only thread. Nothing is marked read, and a link
+              shows where it really goes before it opens.
+            </figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="placeholder"><span>Screenshot placeholder — reply composer (<code>compose_reply</code>)</span></div>
+            <figcaption>
+              <strong>Reply composer.</strong> Edit a reply or a new draft, and save it unsent.
+            </figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="placeholder"><span>Screenshot placeholder — send review (<code>review_send</code>)</span></div>
+            <figcaption>
+              <strong>Send review.</strong> The exact send preview of one draft. Only with sending
+              on, and it issues no token.
+            </figcaption>
+          </figure>
+          <p class="small" style="margin-top: 24px">
+            <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/mcp-apps.md">MCP Apps views</a>
+          </p>
+        </section>
+
+        <section id="tools" aria-labelledby="tools-h">
+          <h2 id="tools-h">Tools</h2>
+          <p>The server has 30 tools by default, and 33 with sending on.</p>
+
+          <div class="group">
+            <h3>Read</h3>
+            <p>Changes nothing and marks nothing read.</p>
+            <dl>
+              <div><dt>search_mail</dt><dd>Search one folder, newest first.</dd></div>
+              <div><dt>count_mail</dt><dd>Count the messages that match a search.</dd></div>
+              <div><dt>read_thread</dt><dd>Read a message or its whole thread as text.</dd></div>
+              <div><dt>show_thread</dt><dd>Show a thread in a read-only view.</dd></div>
+              <div><dt>list_attachments</dt><dd>List a message’s attachments. Downloads nothing.</dd></div>
+              <div><dt>read_attachment</dt><dd>Read one attachment: text from a PDF, TXT or CSV, or an image.</dd></div>
+              <div><dt>list_from_addresses</dt><dd>List the From addresses a draft can use.</dd></div>
+              <div><dt>list_rules</dt><dd>List your folder rules in the order they run (beta).</dd></div>
+              <div><dt>list_actions</dt><dd>Look up logged changes and audited write calls.</dd></div>
+              <div><dt>reindex_status</dt><dd>Show the progress of a search-index rebuild.</dd></div>
+            </dl>
+          </div>
+
+          <div class="group">
+            <h3>Draft</h3>
+            <p>Saves new items, never sends, and is always logged.</p>
+            <dl>
+              <div><dt>create_draft</dt><dd>Save a new, unsent draft in Drafts.</dd></div>
+              <div><dt>compose_reply</dt><dd>Open a composer for a reply or a new draft. It saves only unsent drafts.</dd></div>
+              <div><dt>forward_message</dt><dd>Save an unsent draft that forwards one message, with only the attachments you choose.</dd></div>
+              <div><dt>save_attachment</dt><dd>Save one attachment as a new file in the one folder you allow.</dd></div>
+            </dl>
+          </div>
+
+          <div class="group">
+            <h3>Change, with your approval</h3>
+            <p>Preview first, then a single-use token and your client’s form.</p>
+            <dl>
+              <div><dt>preview_action</dt><dd>Preview a move, archive, trash, read state, label, draft deletion or unsubscribe. Changes nothing.</dd></div>
+              <div><dt>move</dt><dd>Move, archive or trash the approved messages.</dd></div>
+              <div><dt>set_read_state</dt><dd>Mark the approved messages read or unread.</dd></div>
+              <div><dt>label</dt><dd>Add or remove a label on the approved messages.</dd></div>
+              <div><dt>delete_draft</dt><dd>Permanently delete the approved drafts. Cannot be undone.</dd></div>
+              <div><dt>unsubscribe</dt><dd>Unsubscribe from the approved senders. Cannot be undone.</dd></div>
+              <div><dt><span>preview_rules</span><span>apply_rules</span></dt><dd>Preview, then run your folder rules (beta).</dd></div>
+              <div><dt><span>preview_create_folder</span><span>create_folder</span></dt><dd>Preview, then create a folder.</dd></div>
+              <div><dt><span>preview_add_rule</span><span>add_rule</span></dt><dd>Preview, then save a folder rule (beta).</dd></div>
+              <div><dt><span>preview_sieve_filter</span><span>create_sieve_filter</span></dt><dd>Preview a Sieve filter. Creating one always refuses, because Bridge cannot apply it.</dd></div>
+              <div><dt>reindex</dt><dd>Preview, start or cancel a rebuild of the local search index. Mail never changes, so there is no form.</dd></div>
+              <div><dt>undo_action</dt><dd>Reverse one logged change, once, when you ask. Needs no token or form, and is logged.</dd></div>
+            </dl>
+          </div>
+
+          <div class="group">
+            <h3>Send, off by default</h3>
+            <p>These exist only with <code>PROTON_MCP_ENABLE_SEND=1</code>.</p>
+            <dl>
+              <div><dt>preview_send</dt><dd>Preview one saved draft and get its single-use send token.</dd></div>
+              <div><dt>review_send</dt><dd>Show that preview in a view, without a token.</dd></div>
+              <div><dt>send_draft</dt><dd>Send one previewed draft, once, after your form or typed OK. Cannot be undone.</dd></div>
+            </dl>
+          </div>
+          <p class="small" style="margin-top: 24px">
+            <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/tools.md">Tool reference</a>
+          </p>
+        </section>
+
+        <section id="links" aria-labelledby="links-h">
+          <h2 id="links-h">Links</h2>
+          <ul class="links">
+            <li><span>GitHub</span><a href="https://github.com/legalaspro/proton-mail-mcp">github.com/legalaspro/proton-mail-mcp</a></li>
+            <li><span>PyPI</span><a href="https://pypi.org/project/mcp-proton-mail/">pypi.org/project/mcp-proton-mail</a></li>
+            <li><span>MCP Registry</span><a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.legalaspro/proton-mail-mcp">io.github.legalaspro/proton-mail-mcp</a></li>
+            <li><span>Docs</span><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/README.md">Documentation map</a></li>
+            <li><span>License</span><a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/LICENSE">Apache-2.0</a></li>
+            <li><span>For agents</span><a href="/proton-mail-mcp/llms.txt">llms.txt</a></li>
+            <li><span>Contact</span><a href="mailto:dmitri@manajev.com">dmitri@manajev.com</a></li>
+          </ul>
+          <p class="small muted" style="margin-top: 20px">
+            It ships only as the PyPI package <code>mcp-proton-mail</code> and its source on GitHub.
+            There is no .exe or app download. Other projects use similar names, so check the name
+            before you install.
+          </p>
+        </section>
+
+        <section id="faq" aria-labelledby="faq-h">
+          <h2 id="faq-h">Questions</h2>
+
+          <details>
+            <summary>Is it official?</summary>
+            <div>
+              <p>
+                No. mcp-proton-mail is unofficial and is not affiliated with or endorsed by Proton
+                AG. It is an open-source project under the Apache-2.0 license.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Does my mail leave my computer?</summary>
+            <div>
+              <p>
+                The server and Bridge run on your computer, and the server listens only on
+                <code>127.0.0.1</code>. Nothing is hosted. Bridge talks to Proton as it always does.
+              </p>
+              <p>
+                What your agent reads becomes part of its conversation, so it goes wherever your
+                agent’s model runs. The local search index holds headers, not message bodies, and
+                the audit log holds no bodies.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Can the agent send without me?</summary>
+            <div>
+              <p>
+                Sending is off by default, and then there is no send tool at all. When you turn it
+                on, each send needs a saved draft, a fresh preview and your approval in the client’s form.
+              </p>
+              <p>
+                On a client with no form, you type OK in chat instead. The server cannot prove that
+                a human typed it, so a misled assistant could send without asking. Set
+                <code>PROTON_MCP_SEND_TYPED_OK=0</code> to turn that path off.
+              </p>
+              <p>
+                <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/sending.md">Sending mail</a>
+                has every case, including the opt-in for notes to your own addresses.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Which clients does it work with?</summary>
+            <div>
+              <p>
+                Setup writes the config for Claude Desktop, Claude Code, the ChatGPT Mac app, Codex,
+                Cursor and Gemini CLI, and shows the entry for Grok Bot or another agent to add. Any
+                other client on the same computer can connect over HTTP at
+                <code>http://127.0.0.1:8765/mcp</code>. A client that runs in someone else’s cloud
+                cannot reach it.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Do I need a paid Proton plan?</summary>
+            <div>
+              <p>
+                Yes. The server reads your mail through Proton Mail Bridge, and Bridge requires a
+                paid Proton plan.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Does it run on Windows?</summary>
+            <div>
+              <p>
+                Native Windows support is new. It has run on GitHub’s Windows Server runners only,
+                not on Windows 10 or 11 or with a real Proton account. Read
+                <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/windows.md">docs/windows.md</a>
+                first, or use WSL2 and the Linux steps.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>How do I undo a change, or uninstall?</summary>
+            <div>
+              <p>
+                Ask your agent to undo it: <code>undo_action</code> reverses a logged move, archive,
+                trash, read-state, label or folder-rule change, once. Sending, draft deletion and
+                unsubscribe cannot be undone.
+              </p>
+              <p>To uninstall, see the plan first, then run it:</p>
+              <div class="cmd">
+                <pre id="cmd-uninstall"><code><span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">uninstall</span> <span class="w">--dry-run</span>
+<span class="w">uvx</span> <span class="w">mcp-proton-mail</span> <span class="w">uninstall</span></code></pre>
+                <button class="copy" type="button" data-copy="cmd-uninstall" hidden>Copy</button>
+              </div>
+              <p style="margin-top: 14px">
+                It stops and removes the services and settings. It keeps your stored credentials
+                unless you add <code>--remove-credentials</code>, Bridge unless you add
+                <code>--remove-bridge</code>, and the <code>proton-mail</code> entry in each client’s
+                config, which you remove yourself.
+                <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/install.md#uninstall">Uninstall details</a>
+              </p>
+            </div>
+          </details>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          Unofficial, not affiliated with Proton AG. Proton and Proton Mail are trademarks of Proton
+          AG.
+        </p>
+        <p>
+          <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/LICENSE">Apache-2.0</a>
+          · by <a href="https://manajev.com">Dmitri Manajev</a>
+        </p>
+      </footer>
+    </div>
+
+    <p id="copy-status" class="skip" role="status" aria-live="polite"></p>
+
+    <script>
+      (function () {
+        var status = document.getElementById("copy-status");
+
+        function copyText(text) {
+          if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+          }
+          return new Promise(function (resolve, reject) {
+            var area = document.createElement("textarea");
+            area.value = text;
+            area.setAttribute("readonly", "");
+            area.style.position = "fixed";
+            area.style.opacity = "0";
+            document.body.appendChild(area);
+            area.select();
+            var ok = false;
+            try {
+              ok = document.execCommand("copy");
+            } catch (e) {}
+            document.body.removeChild(area);
+            ok ? resolve() : reject();
+          });
+        }
+
+        Array.prototype.forEach.call(document.querySelectorAll("button.copy"), function (button) {
+          var source = document.getElementById(button.getAttribute("data-copy"));
+          if (!source) return;
+          button.hidden = false;
+          button.addEventListener("click", function () {
+            copyText(source.textContent).then(
+              function () {
+                button.textContent = "Copied";
+                status.textContent = "Command copied";
+              },
+              function () {
+                button.textContent = "Select and copy";
+                status.textContent = "Copy failed; select the command and copy it";
+              }
+            );
+            setTimeout(function () {
+              button.textContent = "Copy";
+            }, 1600);
+          });
+        });
+
+        var tabs = document.querySelector("[data-tabs]");
+        if (!tabs) return;
+        var list = tabs.querySelector('[role="tablist"]');
+        var buttons = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+        var panels = buttons.map(function (b) {
+          return document.getElementById(b.getAttribute("aria-controls"));
+        });
+
+        function select(index, focus) {
+          buttons.forEach(function (b, i) {
+            var on = i === index;
+            b.setAttribute("aria-selected", on ? "true" : "false");
+            b.tabIndex = on ? 0 : -1;
+            panels[i].hidden = !on;
+          });
+          if (focus) buttons[index].focus();
+        }
+
+        panels.forEach(function (panel, i) {
+          panel.setAttribute("role", "tabpanel");
+          panel.setAttribute("aria-labelledby", buttons[i].id);
+        });
+        buttons.forEach(function (b, i) {
+          b.addEventListener("click", function () {
+            select(i);
+          });
+          b.addEventListener("keydown", function (e) {
+            var n = buttons.length;
+            var next = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+            if (next === undefined) return;
+            e.preventDefault();
+            select(next, true);
+          });
+        });
+
+        list.hidden = false;
+        tabs.classList.add("tabs-on");
+        var start = panels.findIndex(function (p) {
+          return "#" + p.id === location.hash;
+        });
+        select(start < 0 ? 0 : start);
+      })();
+    </script>
+  </body>
+</html>

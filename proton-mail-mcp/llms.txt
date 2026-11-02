@@ -1,0 +1,81 @@
+# mcp-proton-mail
+
+> Unofficial, open-source MCP server for Proton Mail Bridge. It lets an AI agent search and read mail, write drafts and tidy a mailbox, with a preview the user approves before mail is moved, deleted or sent. It runs on the user's own computer, under the same login as Bridge, and listens only on 127.0.0.1. Nothing is hosted. Not affiliated with or endorsed by Proton AG.
+
+- Package: `mcp-proton-mail` on PyPI (version 1.30.0). The command it installs is `proton-mail-mcp`, also installed as `mcp-proton-mail`.
+- MCP Registry name: `io.github.legalaspro/proton-mail-mcp`
+- License: Apache-2.0
+- Author: Dmitri Manajev, dmitri@manajev.com
+- Page: https://manajev.com/proton-mail-mcp/
+
+## Install
+
+Needs a paid Proton plan (Proton Mail Bridge requires one), uv (https://docs.astral.sh/uv/), and Linux (Debian/Ubuntu, Fedora/RHEL or Arch) or macOS. Native Windows support is new and has run only on Windows Server CI runners: read docs/windows.md first, or use WSL2.
+
+A person runs the guided setup in their own terminal, naming their MCP client:
+
+```sh
+uvx mcp-proton-mail setup --client claude-desktop
+```
+
+`--client` takes `claude-desktop`, `claude-code`, `chatgpt`, `codex`, `gemini`, `cursor` or `grok-bot`, and is repeatable. Setup prints its plan and changes nothing before the person approves it; `--dry-run` stops after the plan. It checks or installs Bridge, stores the Bridge password and a new bearer token in the system's credential store, starts per-user services, checks that the server reads the inbox, and adds the server to the client. The person types the Bridge password at a hidden prompt, so setup runs in their own terminal. Quit the Proton Mail Bridge app first, or add `--skip-bridge-service`.
+
+Add another client later: `uvx mcp-proton-mail configure-client --client <name>`. `--print-config` prints the entry and changes nothing.
+
+Note, 2 Nov 2026: the repository's README, llms.txt, llms-install.md and docs still say "Not on PyPI yet" and use `uvx --from . proton-mail-mcp` from a clone. That wording is out of date: version 1.30.0 is on PyPI and `uvx mcp-proton-mail` installs it. The clone commands still work.
+
+Clients start `proton-mail-mcp connect`, a local stdio relay that reads the token itself; humans do not run it. An agent installing this for someone follows https://github.com/legalaspro/proton-mail-mcp/blob/main/llms-install.md.
+
+Uninstall: `uvx mcp-proton-mail uninstall --dry-run`, then `uvx mcp-proton-mail uninstall`. It keeps stored credentials unless `--remove-credentials`, Bridge unless `--remove-bridge`, and each client's `proton-mail` entry.
+
+## Clients
+
+| Client | `--client` | Config setup writes | Token in the file |
+| --- | --- | --- | --- |
+| Claude Desktop | `claude-desktop` | `claude_desktop_config.json` | No |
+| Claude Code | `claude-code` | `~/.claude.json` (via `claude mcp add --scope user` when on PATH) | No |
+| ChatGPT Mac app | `chatgpt` | `~/.codex/config.toml`, shared with Codex; direct HTTP | Yes, file is owner-only |
+| Codex | `codex` | `~/.codex/config.toml` (via `codex mcp add` when on PATH) | No |
+| Gemini CLI | `gemini` | `~/.gemini/settings.json` (via `gemini mcp add --scope user` when on PATH) | No |
+| Cursor | `cursor` | `~/.cursor/mcp.json` | No |
+| Grok Bot and other local agents | `grok-bot` | None; setup shows the entry for the agent to add | No |
+
+Any other client on the same computer can use MCP Streamable HTTP at `http://127.0.0.1:8765/mcp` with `Authorization: Bearer <token>`. A client in someone else's cloud cannot reach it. Codex and ChatGPT need `tool_timeout_sec = 150` added by hand.
+
+## Safety model
+
+- Reading changes nothing: search and read open mailboxes read-only and never mark mail as read.
+- Every mailbox change takes two steps. A preview returns the count, samples and target and a single-use, short-lived token bound to exactly those messages; the server re-checks them before acting and refuses if anything differs. Then the client shows a form with the exact change; declining retires the token. A client that answers forms automatically defeats this check.
+- Moves, archive, trash, read state, labels and folder rules can be undone once with `undo_action`. Draft deletion, unsubscribe and sending cannot.
+- Sending is off by default (`PROTON_MCP_ENABLE_SEND=1` turns it on, with `PROTON_MCP_SEND_FROM` and `PROTON_BRIDGE_CERT`). The only path is `create_draft` -> `preview_send` -> `send_draft`; any edit after the preview refuses.
+- A send is approved in the client's form, or, on a client that declares no form, by an OK the user types in chat. The server cannot prove a human typed that OK: only the assistant reports it. `PROTON_MCP_SEND_TYPED_OK=0` turns that path off.
+- Every write call goes into an append-only audit log without message bodies, subjects, full addresses or tokens.
+- There is no tool to empty Trash or to delete or rename a mailbox. Permanent deletion reaches only approved drafts.
+- What the agent reads becomes part of its conversation, so it goes wherever the agent's model runs.
+
+## Tools
+
+30 tools by default, 33 with sending on.
+
+- Read (changes nothing): `search_mail`, `count_mail`, `read_thread`, `show_thread` (view), `list_attachments`, `read_attachment`, `list_from_addresses`, `list_rules` (beta), `list_actions`, `reindex_status`.
+- Draft (never sends, logged): `create_draft`, `compose_reply` (view; saves only unsent drafts), `forward_message`, `save_attachment`.
+- Change with approval (preview, token, form): `preview_action` then `move`, `set_read_state`, `label`, `delete_draft` or `unsubscribe`; `preview_rules` then `apply_rules` (beta); `preview_create_folder` then `create_folder`; `preview_add_rule` then `add_rule` (beta); `preview_sieve_filter` then `create_sieve_filter`, which always refuses on Bridge; `reindex` (preview, start or cancel; no form, mail never changes); `undo_action` (no token or form, once per change, logged).
+- Send (only with `PROTON_MCP_ENABLE_SEND=1`): `preview_send`, `review_send` (view, no token), `send_draft`.
+
+MCP Apps clients get three views: a read-only thread view, a reply composer and a send review. Views load nothing from the network and never hold approval tokens.
+
+## Links
+
+- [Repository](https://github.com/legalaspro/proton-mail-mcp)
+- [PyPI: mcp-proton-mail](https://pypi.org/project/mcp-proton-mail/)
+- [MCP Registry entry](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.legalaspro/proton-mail-mcp)
+- [Documentation map](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/README.md)
+- [Connect an MCP client](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients.md)
+- [How approvals work](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/safety.md)
+- [Sending mail](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/sending.md)
+- [Tool reference](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/tools.md)
+- [Windows](https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/windows.md)
+- [Project llms.txt](https://raw.githubusercontent.com/legalaspro/proton-mail-mcp/main/llms.txt)
+- [License: Apache-2.0](https://github.com/legalaspro/proton-mail-mcp/blob/main/LICENSE)
+
+Proton and Proton Mail are trademarks of Proton AG.

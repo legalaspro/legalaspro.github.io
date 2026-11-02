@@ -772,21 +772,24 @@
         list-style: none;
         font: 13.5px/1.4 var(--mono);
       }
+      /* Each arrow wraps with the step after it, never alone at the end of a line. */
       .chain li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .chain .step {
         padding: 5px 10px;
         background: var(--surface-2);
         border: 1px solid var(--line);
         border-radius: 8px;
       }
-      .chain li.you {
+      .chain .you .step {
         color: var(--accent);
         border-color: color-mix(in srgb, var(--accent) 45%, transparent);
         background: var(--accent-soft);
       }
-      .chain li.sep {
-        padding: 0;
-        background: none;
-        border: 0;
+      .chain .arr {
         color: var(--muted);
       }
       .limits {
@@ -1352,6 +1355,10 @@
         .ids dd + dt {
           margin-top: 10px;
         }
+        .ids code,
+        .kv code {
+          white-space: normal;
+        }
         .flow > li {
           padding-left: 54px;
         }
@@ -1463,7 +1470,7 @@
               <dt>MCP Registry</dt>
               <dd>
                 <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.legalaspro/proton-mail-mcp"
-                  ><code>io.github.legalaspro/proton-mail-mcp</code></a
+                  ><code><span class="w">io.github.legalaspro</span><wbr><span class="w">/proton-mail-mcp</span></code></a
                 >
               </dd>
               <dt>Source</dt>
@@ -1625,14 +1632,13 @@
                   <div>
                     <div class="entry"><pre><code id="e-gpt"><span class="w">[mcp_servers.proton-mail]</span>
 <span class="w">url</span> <span class="w">=</span> <span class="w">"http://127.0.0.1:8765/mcp"</span>
-<span class="w">http_headers</span> <span class="w">=</span> <span class="w">{</span> <span class="w">Authorization</span> <span class="w">=</span> <span class="w">"Bearer</span> <span class="w">&lt;token&gt;"</span> <span class="w">}</span>
-<span class="w">tool_timeout_sec</span> <span class="w">=</span> <span class="w">150</span></code></pre></div>
+<span class="w">http_headers</span> <span class="w">=</span> <span class="w">{</span> <span class="w">Authorization</span> <span class="w">=</span> <span class="w">"Bearer</span> <span class="w">&lt;token&gt;"</span> <span class="w">}</span></code></pre></div>
                     <p class="where">In <code>~/.codex/config.toml</code>, shared with Codex. ChatGPT connects over HTTP, so this entry holds the bearer token, and setup writes the file owner-only. Writing it by hand? <code>uvx mcp-proton-mail show-token --copy</code> puts the token on your clipboard without showing it. <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/chatgpt.md">ChatGPT guide</a></p>
                   </div>
                 </div>
                 <div class="row">
                   <p class="label">Then</p>
-                  <p class="note">Add the <code>tool_timeout_sec = 150</code> line by hand, then quit the app completely and open it again. ChatGPT on the web cannot reach your computer.</p>
+                  <p class="note">Add <code>tool_timeout_sec = 150</code> under <code class="w">[mcp_servers.proton-mail]</code> by hand, then quit the app completely and open it again. ChatGPT on the web cannot reach your computer.</p>
                 </div>
             </div>
 
@@ -1660,14 +1666,13 @@
                   <div>
                     <div class="entry"><pre><code id="e-cx"><span class="w">[mcp_servers.proton-mail]</span>
 <span class="w">command</span> <span class="w">=</span> <span class="w">"</span><wbr><span class="w">/home</span><wbr><span class="w">/you</span><wbr><span class="w">/.local</span><wbr><span class="w">/share</span><wbr><span class="w">/proton-mail-mcp</span><wbr><span class="w">/venv</span><wbr><span class="w">/bin</span><wbr><span class="w">/proton-mail-mcp"</span>
-<span class="w">args</span> <span class="w">=</span> <span class="w">["connect",</span> <span class="w">"--env-file",</span> <span class="w">"</span><wbr><span class="w">/home</span><wbr><span class="w">/you</span><wbr><span class="w">/.config</span><wbr><span class="w">/proton-mail-mcp</span><wbr><span class="w">/proton-mail-mcp.env"]</span>
-<span class="w">tool_timeout_sec</span> <span class="w">=</span> <span class="w">150</span></code></pre></div>
+<span class="w">args</span> <span class="w">=</span> <span class="w">["connect",</span> <span class="w">"--env-file",</span> <span class="w">"</span><wbr><span class="w">/home</span><wbr><span class="w">/you</span><wbr><span class="w">/.config</span><wbr><span class="w">/proton-mail-mcp</span><wbr><span class="w">/proton-mail-mcp.env"]</span></code></pre></div>
                     <p class="where">In <code>~/.codex/config.toml</code>. Setup runs <code>codex mcp add</code> itself when <code>codex</code> is on your PATH. <a href="https://github.com/legalaspro/proton-mail-mcp/blob/main/docs/clients/codex.md">Codex guide</a></p>
                   </div>
                 </div>
                 <div class="row">
                   <p class="label">Then</p>
-                  <p class="note">Codex waits 60 seconds for a tool by default, so add the <code>tool_timeout_sec = 150</code> line by hand. Then start a new session.</p>
+                  <p class="note">Codex waits 60 seconds for a tool by default, so add <code>tool_timeout_sec = 150</code> under <code class="w">[mcp_servers.proton-mail]</code> by hand. Then start a new session.</p>
                 </div>
             </div>
 
@@ -1914,13 +1919,10 @@
                 <code>127.0.0.1</code>:
               </p>
               <ol class="chain" aria-label="Send path">
-                <li>create_draft</li>
-                <li class="sep" aria-hidden="true">→</li>
-                <li>preview_send</li>
-                <li class="sep" aria-hidden="true">→</li>
-                <li class="you">your approval</li>
-                <li class="sep" aria-hidden="true">→</li>
-                <li>send_draft</li>
+                <li><span class="step">create_draft</span></li>
+                <li><span class="arr" aria-hidden="true">→</span> <span class="step">preview_send</span></li>
+                <li class="you"><span class="arr" aria-hidden="true">→</span> <span class="step">your approval</span></li>
+                <li><span class="arr" aria-hidden="true">→</span> <span class="step">send_draft</span></li>
               </ol>
               <p>
                 The send token covers the draft’s exact bytes and recipients and lasts 5 minutes by default. Edit
@@ -2186,7 +2188,7 @@
           <div class="names">
               <dl class="kv">
                 <div><dt>PyPI package</dt><dd><code>mcp-proton-mail</code></dd></div>
-                <div><dt>MCP Registry name</dt><dd><code>io.github.legalaspro/proton-mail-mcp</code></dd></div>
+                <div><dt>MCP Registry name</dt><dd><code><span class="w">io.github.legalaspro</span><wbr><span class="w">/proton-mail-mcp</span></code></dd></div>
                 <div><dt>Command</dt><dd><code>proton-mail-mcp</code>, also installed as <code>mcp-proton-mail</code></dd></div>
                 <div><dt>Name in configs</dt><dd><code>proton-mail</code></dd></div>
               </dl>
@@ -2410,9 +2412,13 @@
         var start = fromHash();
         select(start < 0 ? 0 : start, false, false);
         if (start >= 0) tabs.scrollIntoView();
+        // A link elsewhere on the page, such as the install card's, points at a panel that was
+        // hidden when it was followed, so the browser had nothing to scroll to.
         window.addEventListener("hashchange", function () {
           var i = fromHash();
-          if (i >= 0) select(i, false, false);
+          if (i < 0) return;
+          select(i, false, false);
+          tabs.scrollIntoView();
         });
       })();
     </script>

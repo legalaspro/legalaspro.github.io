@@ -52,7 +52,7 @@
         "applicationCategory": "DeveloperApplication",
         "applicationSubCategory": "Model Context Protocol (MCP) server",
         "operatingSystem": "Linux, macOS, Windows",
-        "softwareVersion": "1.30.0",
+        "softwareVersion": "1.30.2",
         "softwareRequirements": "Python 3.12 or newer, uv, Proton Mail Bridge (requires a paid Proton plan)",
         "license": "https://www.apache.org/licenses/LICENSE-2.0",
         "isAccessibleForFree": true,
@@ -220,6 +220,13 @@
         margin: 0 0 14px;
       }
       .w {
+        white-space: nowrap;
+      }
+      /* The release number: equal-width digits and a reserved width, so a newer one swaps in without moving the line. */
+      .ver {
+        display: inline-block;
+        min-width: 5ch;
+        font-variant-numeric: tabular-nums;
         white-space: nowrap;
       }
       /* A link that stands on its own line: a full-size tap target. */
@@ -1076,7 +1083,7 @@
 
     <main id="main" class="wrap">
       <div class="hero">
-        <p class="eyebrow">MCP server for Proton Mail Bridge · v1.30.0</p>
+        <p class="eyebrow">MCP server for Proton Mail Bridge · <span class="w">v<span class="ver" data-version>1.30.2</span></span></p>
         <h1>
           Proton Mail for your AI agent.
           <span class="soft">Nothing moves or sends until you approve.</span>
@@ -1692,7 +1699,7 @@
           <li><a href="mailto:dmitri@manajev.com">dmitri@manajev.com</a></li>
         </ul>
         <p>
-          <strong>mcp-proton-mail</strong> 1.30.0 · Apache-2.0 · by Dmitri Manajev. Unofficial, not
+          <strong>mcp-proton-mail</strong> <span class="ver" data-version>1.30.2</span> · Apache-2.0 · by Dmitri Manajev. Unofficial, not
           affiliated with Proton AG. Proton and Proton Mail are trademarks of Proton AG.
         </p>
       </div>
@@ -1761,6 +1768,63 @@
         }
         window.addEventListener("hashchange", openTarget);
         openTarget();
+      })();
+    </script>
+    <script>
+      // Show the latest release: PyPI first, then GitHub. Any failure keeps the number in the page.
+      (function () {
+        var spans = document.querySelectorAll("[data-version]");
+        if (!spans.length || !window.fetch || !window.AbortController) return;
+        var semver = /^(0|[1-9]\d{0,4})\.(0|[1-9]\d{0,4})\.(0|[1-9]\d{0,4})$/;
+        var current = spans[0].textContent.trim();
+
+        function latest(url, pick) {
+          var controller = new AbortController();
+          var timer = setTimeout(function () {
+            controller.abort();
+          }, 4000);
+          return fetch(url, { signal: controller.signal })
+            .then(function (response) {
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.json();
+            })
+            .then(function (data) {
+              var version = data && pick(data);
+              if (typeof version !== "string") throw new Error("No version");
+              version = version.replace(/^v/, "");
+              if (!semver.test(version)) throw new Error("Not a release version");
+              return version;
+            })
+            .finally(function () {
+              clearTimeout(timer);
+            });
+        }
+
+        // Only a newer release replaces the number, so a stale cached answer never shows an older one.
+        function isNewer(version) {
+          var a = version.split("."),
+            b = current.split(".");
+          for (var i = 0; i < 3; i++) {
+            if (+a[i] !== +b[i]) return +a[i] > +b[i];
+          }
+          return false;
+        }
+
+        latest("https://pypi.org/pypi/mcp-proton-mail/json", function (data) {
+          return data.info && data.info.version;
+        })
+          .catch(function () {
+            return latest("https://api.github.com/repos/legalaspro/proton-mail-mcp/releases/latest", function (data) {
+              return data.tag_name;
+            });
+          })
+          .then(function (version) {
+            if (!isNewer(version)) return;
+            Array.prototype.forEach.call(spans, function (span) {
+              span.textContent = version;
+            });
+          })
+          .catch(function () {});
       })();
     </script>
   </body>

@@ -1,0 +1,47 @@
+# Dmitri Manajev
+
+> Personal site of Dmitri Manajev (Manajev AI Labs), a Robotics and Reinforcement Learning Engineer based in Zurich, Switzerland. Dmitri builds and commissions autonomous robotic systems, from simulation and learning to real hardware, with ROS 2, C++, Python and robot learning, and brings 15+ years in software engineering, architecture, technical product management and engineering leadership.
+
+- Currently: independent Robotics Engineer for Hivebotics (May 2026 to present), remote and on-site in Singapore, developing and commissioning production ROS 2 systems for autonomous mobile manipulators.
+- Open to robotics and AI roles, consulting, contract work and technical collaborations, in Switzerland or remotely.
+- Contact: dmitri@manajev.com
+- Education: M.Sc.-equivalent Specialist Degree in Software Engineering & Mathematics, St. Petersburg State University.
+
+## Site
+
+- [Home](https://manajev.com/): Selected work, recent engagements, capabilities, background and contact.
+- [Résumé](https://manajev.com/resume/): Profile summary and the full two-page résumé.
+- [Résumé (PDF)](https://manajev.com/assets/resume.pdf): The same résumé as a PDF.
+
+## Featured: mcp-proton-mail
+
+- [mcp-proton-mail](https://manajev.com/proton-mail-mcp/): Unofficial, open-source MCP server for Proton Mail Bridge, by Dmitri Manajev. An AI agent can search, read and draft mail on the person's own computer; moving, deleting or sending needs a single-use token and the person's approval. Not affiliated with Proton AG.
+- [mcp-proton-mail llms.txt](https://manajev.com/proton-mail-mcp/llms.txt): The project's own llms.txt: install, clients, safety model and tools.
+- [Install guide for AI agents](https://manajev.com/proton-mail-mcp/llms-install.md): Step-by-step install from PyPI, written for an agent installing it for a person.
+- [Source code](https://github.com/legalaspro/proton-mail-mcp): GitHub repository, Apache-2.0.
+
+## Selected work
+
+- [SO-101 ROS Physical AI](https://github.com/legalaspro/so101-ros-physical-ai): End-to-end ROS 2 reference stack for real SO-101 arms: teleoperation, ros2_control, MoveIt 2, multi-camera data capture, LeRobot training and ACT/SmolVLA inference.
+- [Physical-AI course](https://app.theconstruct.ai/courses/ai-robot-arm-project-428/): Hands-on robot-arm course Dmitri authored for The Construct.
+- [Robokin](https://github.com/legalaspro/robokin): URDF-first forward and inverse kinematics toolkit with one API across Placo, PyRoki and RoboPlan, plus Viser control and Rerun telemetry.
+- [MARL PPO Suite](https://github.com/legalaspro/marl-ppo-suite): MAPPO and HAPPO implementations for cooperative multi-agent RL, with reproducible SMAC training and evaluation.
+- [MARL benchmark results](https://api.wandb.ai/links/legalaspro-rl/agvdrt35): Published SMACv2 evaluation report.
+
+## Profiles
+
+- [GitHub](https://github.com/legalaspro): All public repositories.
+- [LinkedIn](https://linkedin.com/in/dmitri-manajev/)
+- [Hugging Face](https://huggingface.co/legalaspro): Published models.
+- [Weights & Biases](https://wandb.ai/legalaspro-rl): Experiment reports.
+
+## Optional
+
+- [Unity Multi-Agent RL](https://github.com/legalaspro/unity_multiagent_rl): MAPPO, MASAC, MATD3 and MADDPG.
+- [MADDPG Zoo](https://github.com/legalaspro/maddpg-zoo-torch): PyTorch and PettingZoo baselines.
+- [RL-Odyssey](https://github.com/legalaspro/rl-odyssey): Continuous-control research framework.
+- [Unity Deep RL](https://github.com/legalaspro/unity-reacher-crawler-deeprl): DDPG, TD3 and SAC experiments.
+- [FastBot](https://github.com/legalaspro/fastbot): ROS 2, Nav2, SLAM, Gazebo and Docker.
+- [UR3e Manipulation](https://github.com/legalaspro/manipulation_project): MoveIt 2, PCL perception and Robotiq-gripper pick-and-place.
+- [Warehouse Project](https://github.com/legalaspro/warehouse_project): Navigation, SLAM and orchestration.
+- [ROSbot XL Maze Solver](https://github.com/legalaspro/rosbot_xl_pid_maze_solver): Holonomic navigation and PID control.

@@ -1,0 +1,4 @@
+# GitHub Pages builds this site with Jekyll. Keep repo tooling off the live site.
+exclude:
+  - docs/
+  - scripts/

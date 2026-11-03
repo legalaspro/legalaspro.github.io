@@ -1,6 +1,7 @@
 # Installing mcp-proton-mail: a guide for AI agents
 
-For version 1.30.0, updated 2 November 2026. Human page: https://manajev.com/proton-mail-mcp/
+Covers the latest version on PyPI (https://pypi.org/project/mcp-proton-mail/). Guide updated 3 November 2026.
+Human page: https://manajev.com/proton-mail-mcp/
 
 You are an AI agent installing mcp-proton-mail for a person on their own computer. It is an
 unofficial MCP server for Proton Mail Bridge, not affiliated with Proton AG. You run the installer
@@ -21,8 +22,7 @@ bearer token, and never put any of them in a command, a file or a message.
 It ships only as the PyPI package above and its GitHub source, with no app download or .exe.
 Install only that package.
 
-Every command below starts with `uvx mcp-proton-mail`. To pin this version, use
-`uvx mcp-proton-mail@1.30.0` instead.
+Every command below starts with `uvx mcp-proton-mail`. uvx caches the first version it fetches; use `uvx mcp-proton-mail@latest` to get the newest release.
 
 ## 1. What the person needs
 

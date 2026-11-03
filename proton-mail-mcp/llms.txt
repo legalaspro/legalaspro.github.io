@@ -2,7 +2,7 @@
 
 > Unofficial, open-source MCP server for Proton Mail Bridge. An AI agent can search and read mail and write drafts. Moving, deleting or sending mail needs a single-use token bound to the exact previewed messages, and the person's approval in their MCP client; `undo_action` reverses a logged change at the person's request, with no token. It runs on the person's own computer, under the same login as Bridge, and listens only on 127.0.0.1. Nothing is hosted. Unofficial, not affiliated with Proton AG.
 
-- PyPI package: `mcp-proton-mail`, version 1.30.0. Its command is `proton-mail-mcp`, also installed as `mcp-proton-mail`.
+- PyPI package: `mcp-proton-mail` (latest version: https://pypi.org/project/mcp-proton-mail/ ). Its command is `proton-mail-mcp`, also installed as `mcp-proton-mail`.
 - MCP Registry name: `io.github.legalaspro/proton-mail-mcp`
 - Source: https://github.com/legalaspro/proton-mail-mcp
 - License: Apache-2.0
@@ -80,7 +80,7 @@ MCP Apps clients get three views: a read-only thread view (links show their real
 
 ## Note on the repository docs
 
-As of 2 November 2026, the repository's README, llms.txt, llms-install.md and docs still say "Not on PyPI yet" and install from a clone with `uvx --from . proton-mail-mcp`. That is out of date: version 1.30.0 is on PyPI, `uvx mcp-proton-mail` installs it, and the MCP Registry entry points to it. The clone commands still work. https://manajev.com/proton-mail-mcp/llms-install.md is the PyPI version of the install guide.
+As of 2 November 2026, the repository's README, llms.txt, llms-install.md and docs still say "Not on PyPI yet" and install from a clone with `uvx --from . proton-mail-mcp`. That is out of date: the package is on PyPI, `uvx mcp-proton-mail` installs it (`uvx mcp-proton-mail@latest` refreshes a cached older version), and the MCP Registry entry points to it. The clone commands still work. https://manajev.com/proton-mail-mcp/llms-install.md is the PyPI version of the install guide.
 
 ## Links
 
